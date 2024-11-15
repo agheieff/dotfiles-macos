@@ -1,0 +1,10 @@
+*
+
+!nvim/
+!nvim/**/*
+!sway/
+!sway/**/*
+!waybar/
+!waybar/**/*
+
+!.gitignore
