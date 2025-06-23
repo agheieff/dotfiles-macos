@@ -1,0 +1,133 @@
+start-at-login = true
+after-login-command = []
+
+after-startup-command = [
+	'exec-and-forget sketchybar >> $HOME/.sketchybar/service.log 2>&1',
+	'exec-and-forget borders active_color=0xffe1e3e4 inactive_color=0xff494d64 width=5.0',
+]
+
+exec-on-workspace-change = [
+	'/bin/bash',
+	'-c',
+	'sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE=$AEROSPACE_FOCUSED_WORKSPACE FOCUSED_DISPLAY=$(aerospace list-monitors --focused | awk "{print $1}")'
+]
+
+on-focus-changed = [
+	'move-mouse window-lazy-center',
+	'exec-and-forget sketchybar --trigger aerospace_focus_change FOCUSED_WORKSPACE=$AEROSPACE_FOCUSED_WORKSPACE',
+]
+
+on-layout-change = [
+	'exec-and-forget sketchybar --trigger window_moved'
+]
+
+
+on-focused-monitor-changed = ['move-mouse monitor-lazy-center']
+
+enable-normalization-flatten-containers = true
+enable-normalization-opposite-orientation-for-nested-containers = true
+accordion-padding = 30
+default-root-container-layout = 'tiles'
+default-root-container-orientation = 'auto'
+
+[gaps]
+inner.horizontal = 10
+inner.vertical = 10
+outer.left = 10
+outer.right = 10
+outer.top = [{ monitor.main = 32 }, { monitor.secondary = 32 }, 32]
+
+[mode.main.binding]
+# Core Navigation (WASD - physical keys)
+alt-w = 'focus up'
+alt-a = 'focus left'
+alt-s = 'focus down'
+alt-d = 'focus right'
+
+# Move window
+alt-shift-w = 'move up'
+alt-shift-a = 'move left'
+alt-shift-s = 'move down'
+alt-shift-d = 'move right'
+
+# Resize window (using resize mode instead)
+# alt-ctrl keys now used for workspace movement
+
+# Window Management
+alt-q = 'close'
+alt-f = 'fullscreen'
+alt-t = 'layout floating tiling'  # Toggle floating
+alt-h = 'join-with right'
+alt-v = 'join-with down'
+alt-e = 'layout tiles accordion'  # Toggle split layout
+alt-space = 'focus-back-and-forth'
+
+# Workspace navigation
+alt-tab = 'workspace next'
+alt-shift-tab = 'workspace prev'
+
+# Layout Management
+alt-l = 'layout tiles accordion floating'  # Cycle layouts
+
+# Switch to workspace
+alt-1 = 'workspace 1'
+alt-2 = 'workspace 2'
+alt-3 = 'workspace 3'
+alt-4 = 'workspace 4'
+alt-5 = 'workspace 5'
+alt-6 = 'workspace 6'
+alt-7 = 'workspace 7'
+alt-8 = 'workspace 8'
+alt-9 = 'workspace 9'
+alt-0 = 'workspace 10'
+
+# Move to workspace
+alt-shift-1 = ['move-node-to-workspace 1', 'exec-and-forget sketchybar --trigger window_moved']
+alt-shift-2 = ['move-node-to-workspace 2', 'exec-and-forget sketchybar --trigger window_moved']
+alt-shift-3 = ['move-node-to-workspace 3', 'exec-and-forget sketchybar --trigger window_moved']
+alt-shift-4 = ['move-node-to-workspace 4', 'exec-and-forget sketchybar --trigger window_moved']
+alt-shift-5 = ['move-node-to-workspace 5', 'exec-and-forget sketchybar --trigger window_moved']
+alt-shift-6 = ['move-node-to-workspace 6', 'exec-and-forget sketchybar --trigger window_moved']
+alt-shift-7 = ['move-node-to-workspace 7', 'exec-and-forget sketchybar --trigger window_moved']
+alt-shift-8 = ['move-node-to-workspace 8', 'exec-and-forget sketchybar --trigger window_moved']
+alt-shift-9 = ['move-node-to-workspace 9', 'exec-and-forget sketchybar --trigger window_moved']
+alt-shift-0 = ['move-node-to-workspace 10', 'exec-and-forget sketchybar --trigger window_moved']
+
+# Move window to adjacent workspace and follow
+alt-ctrl-w = ['move-node-to-monitor up', 'focus-monitor up', 'exec-and-forget sketchybar --trigger window_moved']
+alt-ctrl-a = ['move-node-to-workspace prev', 'workspace prev', 'exec-and-forget sketchybar --trigger window_moved']
+alt-ctrl-s = ['move-node-to-monitor down', 'focus-monitor down', 'exec-and-forget sketchybar --trigger window_moved']
+alt-ctrl-d = ['move-node-to-workspace next', 'workspace next', 'exec-and-forget sketchybar --trigger window_moved']
+
+# Move and follow to workspace by number
+alt-ctrl-1 = ['move-node-to-workspace 1', 'workspace 1', 'exec-and-forget sketchybar --trigger window_moved']
+alt-ctrl-2 = ['move-node-to-workspace 2', 'workspace 2', 'exec-and-forget sketchybar --trigger window_moved']
+alt-ctrl-3 = ['move-node-to-workspace 3', 'workspace 3', 'exec-and-forget sketchybar --trigger window_moved']
+alt-ctrl-4 = ['move-node-to-workspace 4', 'workspace 4', 'exec-and-forget sketchybar --trigger window_moved']
+alt-ctrl-5 = ['move-node-to-workspace 5', 'workspace 5', 'exec-and-forget sketchybar --trigger window_moved']
+alt-ctrl-6 = ['move-node-to-workspace 6', 'workspace 6', 'exec-and-forget sketchybar --trigger window_moved']
+alt-ctrl-7 = ['move-node-to-workspace 7', 'workspace 7', 'exec-and-forget sketchybar --trigger window_moved']
+alt-ctrl-8 = ['move-node-to-workspace 8', 'workspace 8', 'exec-and-forget sketchybar --trigger window_moved']
+alt-ctrl-9 = ['move-node-to-workspace 9', 'workspace 9', 'exec-and-forget sketchybar --trigger window_moved']
+alt-ctrl-0 = ['move-node-to-workspace 10', 'workspace 10', 'exec-and-forget sketchybar --trigger window_moved']
+
+# System
+alt-shift-slash = 'reload-config'
+
+# Modes
+alt-rightSquareBracket = 'mode resize'
+
+[mode.resize.binding]
+w = 'resize height -50'
+a = 'resize width -50'
+s = 'resize height +50'
+d = 'resize width +50'
+esc = 'mode main'
+enter = 'mode main'
+
+[workspace-to-monitor-force-assignment]
+1 = 'main'
+2 = 'secondary'
+
+# Remove the key mapping section entirely - let macOS handle Colemak
+# Aerospace will use the actual key codes sent by the OS

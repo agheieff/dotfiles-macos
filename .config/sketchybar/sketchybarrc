@@ -1,0 +1,54 @@
+#!/bin/bash
+
+# This is a simple Sketchybar config
+
+PLUGIN_DIR="$CONFIG_DIR/plugins"
+ITEM_DIR="$CONFIG_DIR/items"
+
+# Load global settings
+source "$CONFIG_DIR/colors.sh"
+source "$CONFIG_DIR/icons.sh"
+
+# Bar configuration
+sketchybar --bar height=32 \
+                 position=top \
+                 sticky=on \
+                 padding_left=5 \
+                 padding_right=10 \
+                 color=0xff1e1e2e \
+                 topmost=on \
+                 y_offset=0 \
+                 margin=0 \
+                 display=all
+
+# Default values
+sketchybar --default icon.font="SF Pro:Regular:17.0" \
+                     icon.color=0xffcdd6f4 \
+                     label.font="SF Pro:Regular:17.0" \
+                     label.color=0xffcdd6f4 \
+                     padding_left=5 \
+                     padding_right=5 \
+                     label.padding_left=4 \
+                     label.padding_right=4 \
+                     icon.padding_left=4 \
+                     icon.padding_right=4 \
+                     updates=when_shown
+
+# -- Left Side Items --
+source "$ITEM_DIR/menubar_toggle.sh"
+source "$ITEM_DIR/spaces.sh"
+
+# -- Center Items --
+source "$ITEM_DIR/clock.sh"
+
+# -- Right Side Items --
+source "$ITEM_DIR/apple.sh"
+source "$ITEM_DIR/language.sh"
+source "$ITEM_DIR/memory.sh"
+source "$ITEM_DIR/cpu.sh"
+source "$ITEM_DIR/brightness.sh"
+source "$ITEM_DIR/volume.sh"
+source "$ITEM_DIR/battery.sh"
+
+# Forcing all item scripts to run (never do this outside of sketchybarrc)
+sketchybar --update
