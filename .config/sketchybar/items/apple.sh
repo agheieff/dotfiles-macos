@@ -25,19 +25,19 @@ sketchybar --add item apple.about popup.apple \
            --set apple.about icon="󰋼" \
                             label="About This Mac" \
                             $POPUP_PADDING \
-                            click_script="open -b com.apple.systempreferences" \
+                            click_script="open -b com.apple.systempreferences; sketchybar --set apple popup.drawing=off" \
            \
            --add item apple.settings popup.apple \
            --set apple.settings icon="󰒓" \
                                label="System Settings..." \
                                $POPUP_PADDING \
-                               click_script="open -b com.apple.systempreferences" \
+                               click_script="open -b com.apple.systempreferences; sketchybar --set apple popup.drawing=off" \
            \
            --add item apple.activity popup.apple \
            --set apple.activity icon="󰨇" \
                                label="Activity Monitor" \
                                $POPUP_PADDING \
-                               click_script="open -b com.apple.ActivityMonitor" \
+                               click_script="open -b com.apple.ActivityMonitor; sketchybar --set apple popup.drawing=off" \
            \
            --add item apple.separator popup.apple \
            --set apple.separator icon="" \
@@ -52,22 +52,22 @@ sketchybar --add item apple.about popup.apple \
            --set apple.lock icon="󰌾" \
                            label="Lock Screen" \
                            $POPUP_PADDING \
-                           click_script="pmset displaysleepnow" \
+                           click_script="pmset displaysleepnow; sketchybar --set apple popup.drawing=off" \
            \
            --add item apple.logout popup.apple \
            --set apple.logout icon="󰍃" \
                              label="Log Out..." \
                              $POPUP_PADDING \
-                             click_script="osascript -e 'tell app \"System Events\" to log out'" \
+                             click_script="osascript -e 'tell app \"System Events\" to log out'; sketchybar --set apple popup.drawing=off" \
            \
            --add item apple.reboot popup.apple \
            --set apple.reboot icon="󰜉" \
                              label="Restart..." \
                              $POPUP_PADDING \
-                             click_script="osascript -e 'tell app \"System Events\" to restart'" \
+                             click_script="osascript -e 'tell app \"System Events\" to restart'; sketchybar --set apple popup.drawing=off" \
            \
            --add item apple.shutdown popup.apple \
            --set apple.shutdown icon="󰐥" \
                                label="Shut Down..." \
                                $POPUP_PADDING \
-                               click_script="osascript -e 'tell app \"System Events\" to shut down'"
+                               click_script="osascript -e 'tell app \"System Events\" to shut down'; sketchybar --set apple popup.drawing=off"
