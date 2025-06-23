@@ -196,6 +196,21 @@
               },
               {
                 "type": "basic",
+                "description": "Win+Shift+Return opens terminal with file manager",
+                "from": {
+                  "key_code": "return_or_enter",
+                  "modifiers": {
+                    "mandatory": ["left_option", "shift"]
+                  }
+                },
+                "to": [
+                  {
+                    "shell_command": "open -a Ghostty --args -e ranger"
+                  }
+                ]
+              },
+              {
+                "type": "basic",
                 "description": "Win+X opens System Settings",
                 "from": {
                   "key_code": "x",
@@ -303,11 +318,77 @@
             ]
           },
           {
+            "description": "Special Functions",
+            "manipulators": [
+              {
+                "type": "basic",
+                "description": "Win+C clipboard history",
+                "from": {
+                  "key_code": "c",
+                  "modifiers": {
+                    "mandatory": ["left_option"]
+                  }
+                },
+                "to": [
+                  {
+                    "shell_command": "open -a Clipy"
+                  }
+                ]
+              },
+              {
+                "type": "basic",
+                "description": "Win+Period emoji picker",
+                "from": {
+                  "key_code": "period",
+                  "modifiers": {
+                    "mandatory": ["left_option"]
+                  }
+                },
+                "to": [
+                  {
+                    "key_code": "spacebar",
+                    "modifiers": ["control", "command"]
+                  }
+                ]
+              },
+              {
+                "type": "basic",
+                "description": "Win+Semicolon run command",
+                "from": {
+                  "key_code": "semicolon",
+                  "modifiers": {
+                    "mandatory": ["left_option"]
+                  }
+                },
+                "to": [
+                  {
+                    "shell_command": "open -a Raycast"
+                  }
+                ]
+              },
+              {
+                "type": "basic",
+                "description": "Win+Comma settings",
+                "from": {
+                  "key_code": "comma",
+                  "modifiers": {
+                    "mandatory": ["left_option"]
+                  }
+                },
+                "to": [
+                  {
+                    "shell_command": "open -b com.apple.systempreferences"
+                  }
+                ]
+              }
+            ]
+          },
+          {
             "description": "Media Controls (Win+Keys)",
             "manipulators": [
               {
                 "type": "basic",
-                "description": "Win+U volume up",
+                "description": "Win+I volume up (physical U key in Colemak)",
                 "from": {
                   "key_code": "u",
                   "modifiers": {
@@ -322,11 +403,11 @@
               },
               {
                 "type": "basic",
-                "description": "Win+E volume down (physical F key in Colemak)",
+                "description": "Win+Shift+I volume down",
                 "from": {
-                  "key_code": "f",
+                  "key_code": "u",
                   "modifiers": {
-                    "mandatory": ["left_option"]
+                    "mandatory": ["left_option", "shift"]
                   }
                 },
                 "to": [
@@ -337,11 +418,11 @@
               },
               {
                 "type": "basic",
-                "description": "Win+O mute (physical semicolon in Colemak)",
+                "description": "Win+U mute",
                 "from": {
-                  "key_code": "semicolon",
+                  "key_code": "u",
                   "modifiers": {
-                    "mandatory": ["left_option"]
+                    "mandatory": ["left_option", "control"]
                   }
                 },
                 "to": [
@@ -352,9 +433,39 @@
               },
               {
                 "type": "basic",
-                "description": "Win+P play/pause (physical R key in Colemak)",
+                "description": "Win+O brightness up (physical semicolon in Colemak)",
                 "from": {
-                  "key_code": "r",
+                  "key_code": "semicolon",
+                  "modifiers": {
+                    "mandatory": ["left_option"]
+                  }
+                },
+                "to": [
+                  {
+                    "key_code": "display_brightness_increment"
+                  }
+                ]
+              },
+              {
+                "type": "basic",
+                "description": "Win+Shift+O brightness down",
+                "from": {
+                  "key_code": "semicolon",
+                  "modifiers": {
+                    "mandatory": ["left_option", "shift"]
+                  }
+                },
+                "to": [
+                  {
+                    "key_code": "display_brightness_decrement"
+                  }
+                ]
+              },
+              {
+                "type": "basic",
+                "description": "Win+J play/pause (physical Y key in Colemak)",
+                "from": {
+                  "key_code": "y",
                   "modifiers": {
                     "mandatory": ["left_option"]
                   }
@@ -367,31 +478,46 @@
               },
               {
                 "type": "basic",
-                "description": "Win+I brightness up (physical U key in Colemak)",
+                "description": "Win+K next track (physical E key in Colemak)",
                 "from": {
-                  "key_code": "u",
-                  "modifiers": {
-                    "mandatory": ["left_option", "shift"]
-                  }
-                },
-                "to": [
-                  {
-                    "key_code": "display_brightness_increment"
-                  }
-                ]
-              },
-              {
-                "type": "basic",
-                "description": "Win+Y brightness down (physical J key in Colemak)",
-                "from": {
-                  "key_code": "j",
+                  "key_code": "e",
                   "modifiers": {
                     "mandatory": ["left_option"]
                   }
                 },
                 "to": [
                   {
-                    "key_code": "display_brightness_decrement"
+                    "key_code": "fastforward"
+                  }
+                ]
+              },
+              {
+                "type": "basic",
+                "description": "Win+Shift+K previous track",
+                "from": {
+                  "key_code": "e",
+                  "modifiers": {
+                    "mandatory": ["left_option", "shift"]
+                  }
+                },
+                "to": [
+                  {
+                    "key_code": "rewind"
+                  }
+                ]
+              },
+              {
+                "type": "basic",
+                "description": "Win+Shift+J stop",
+                "from": {
+                  "key_code": "y",
+                  "modifiers": {
+                    "mandatory": ["left_option", "shift"]
+                  }
+                },
+                "to": [
+                  {
+                    "key_code": "stop"
                   }
                 ]
               }
@@ -402,17 +528,135 @@
             "manipulators": [
               {
                 "type": "basic",
-                "description": "Win+O screenshot (physical semicolon in Colemak)",
+                "description": "Win+Y full screenshot to clipboard (physical J key in Colemak)",
                 "from": {
-                  "key_code": "semicolon",
+                  "key_code": "j",
                   "modifiers": {
-                    "mandatory": ["left_option", "control"]
+                    "mandatory": ["left_option"]
+                  }
+                },
+                "to": [
+                  {
+                    "key_code": "3",
+                    "modifiers": ["command", "shift"]
+                  }
+                ]
+              },
+              {
+                "type": "basic",
+                "description": "Win+Shift+Y area screenshot to clipboard",
+                "from": {
+                  "key_code": "j",
+                  "modifiers": {
+                    "mandatory": ["left_option", "shift"]
                   }
                 },
                 "to": [
                   {
                     "key_code": "4",
                     "modifiers": ["command", "shift"]
+                  }
+                ]
+              },
+              {
+                "type": "basic",
+                "description": "Win+Ctrl+Y full screenshot to file",
+                "from": {
+                  "key_code": "j",
+                  "modifiers": {
+                    "mandatory": ["left_option", "control"]
+                  }
+                },
+                "to": [
+                  {
+                    "key_code": "3",
+                    "modifiers": ["command", "shift", "control"]
+                  }
+                ]
+              },
+              {
+                "type": "basic",
+                "description": "Win+Ctrl+Shift+Y area screenshot to file",
+                "from": {
+                  "key_code": "j",
+                  "modifiers": {
+                    "mandatory": ["left_option", "control", "shift"]
+                  }
+                },
+                "to": [
+                  {
+                    "key_code": "4",
+                    "modifiers": ["command", "shift", "control"]
+                  }
+                ]
+              },
+              {
+                "type": "basic",
+                "description": "Win+Alt+Y window screenshot to clipboard",
+                "from": {
+                  "key_code": "j",
+                  "modifiers": {
+                    "mandatory": ["left_option", "left_alt"]
+                  }
+                },
+                "to": [
+                  {
+                    "key_code": "4",
+                    "modifiers": ["command", "shift"],
+                    "lazy": true
+                  },
+                  {
+                    "key_code": "spacebar"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "Function Key Controls",
+            "manipulators": [
+              {
+                "type": "basic",
+                "description": "Win+F5 toggle WiFi",
+                "from": {
+                  "key_code": "f5",
+                  "modifiers": {
+                    "mandatory": ["left_option"]
+                  }
+                },
+                "to": [
+                  {
+                    "shell_command": "networksetup -getairportpower en0 | grep On && networksetup -setairportpower en0 off || networksetup -setairportpower en0 on"
+                  }
+                ]
+              },
+              {
+                "type": "basic",
+                "description": "Win+F6 toggle Bluetooth",
+                "from": {
+                  "key_code": "f6",
+                  "modifiers": {
+                    "mandatory": ["left_option"]
+                  }
+                },
+                "to": [
+                  {
+                    "shell_command": "blueutil -p | grep 1 && blueutil -p 0 || blueutil -p 1"
+                  }
+                ]
+              },
+              {
+                "type": "basic",
+                "description": "Win+F9 toggle trackpad",
+                "from": {
+                  "key_code": "f9",
+                  "modifiers": {
+                    "mandatory": ["left_option"]
+                  }
+                },
+                "to": [
+                  {
+                    "shell_command": "defaults read com.apple.AppleMultitouchTrackpad Clicking | grep 1 && defaults write com.apple.AppleMultitouchTrackpad Clicking -int 0 || defaults write com.apple.AppleMultitouchTrackpad Clicking -int 1"
                   }
                 ]
               }
