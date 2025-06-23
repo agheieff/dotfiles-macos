@@ -196,3 +196,44 @@ auto-format = true
 
 [language-server.sourcekit-lsp]
 command = "sourcekit-lsp"
+
+# LaTeX
+[[language]]
+name = "latex"
+language-servers = ["texlab"]
+formatter = { command = "latexindent", args = ["-l", "-"] }
+auto-format = false  # LaTeX formatting can be tricky, manual is safer
+
+[language-server.texlab]
+command = "texlab"
+
+[language-server.texlab.config]
+texlab.build.executable = "latexmk"
+texlab.build.args = ["-pdf", "-interaction=nonstopmode", "-synctex=1"]
+texlab.chktex.onEdit = true
+texlab.formatterLineLength = 80
+
+# ConTeXt
+[[language]]
+name = "context"
+scope = "source.context"
+injection-regex = "context"
+file-types = ["tex", "ctx", "mkiv", "mkxl"]
+language-servers = ["texlab"]
+formatter = { command = "contextformat" }
+auto-format = false
+
+# ARM Assembly (Apple Silicon)
+[[language]]
+name = "gas"
+scope = "source.armasm"
+injection-regex = "armasm|aarch64"
+file-types = ["s", "S", "asm"]
+comment-token = "//"
+indent = { tab-width = 4, unit = "    " }
+language-servers = ["asm-lsp"]
+
+[language-server.asm-lsp]
+command = "asm-lsp"
+
+# Note: HTML and CSS are already configured above in the file
