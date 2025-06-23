@@ -1,0 +1,24 @@
+{
+  "title": "Test Rule",
+  "rules": [
+    {
+      "description": "Test: Win+Physical U key = Volume Up",
+      "manipulators": [
+        {
+          "type": "basic",
+          "from": {
+            "key_code": "u",
+            "modifiers": {
+              "mandatory": ["left_option"]
+            }
+          },
+          "to": [
+            {
+              "key_code": "volume_increment"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
