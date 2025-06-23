@@ -390,7 +390,7 @@
                 "type": "basic",
                 "description": "Win+I volume up (physical U key in Colemak)",
                 "from": {
-                  "key_code": "u",
+                  "key_code": "l",
                   "modifiers": {
                     "mandatory": ["left_option"]
                   }
@@ -405,7 +405,7 @@
                 "type": "basic",
                 "description": "Win+Shift+I volume down",
                 "from": {
-                  "key_code": "u",
+                  "key_code": "l",
                   "modifiers": {
                     "mandatory": ["left_option", "shift"]
                   }
@@ -420,7 +420,7 @@
                 "type": "basic",
                 "description": "Win+U mute",
                 "from": {
-                  "key_code": "u",
+                  "key_code": "l",
                   "modifiers": {
                     "mandatory": ["left_option", "control"]
                   }

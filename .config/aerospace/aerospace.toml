@@ -54,7 +54,7 @@ alt-shift-s = 'move right'
 alt-q = 'close'
 alt-f = 'fullscreen'
 alt-t = 'layout floating tiling'
-alt-g = 'layout sticky'  # Sticky toggle (show on all workspaces)
+alt-g = 'layout floating'  # No direct sticky equivalent
 alt-h = 'join-with right'
 alt-v = 'join-with down'
 alt-e = 'layout tiles accordion'
@@ -66,12 +66,12 @@ alt-shift-tab = 'workspace prev'
 
 # Layout Management
 alt-l = 'layout tiles accordion floating'  # Cycle layouts
-alt-m = 'move-to-scratchpad'
-alt-shift-m = 'summon-from-scratchpad'
-alt-n = 'focus next'
-alt-shift-n = 'focus prev'
-alt-p = 'focus-parent'
-alt-shift-p = 'focus-child'
+# alt-m = 'move-to-scratchpad'  # Not supported in Aerospace
+# alt-shift-m = 'summon-from-scratchpad'  # Not supported
+# alt-n = 'focus next'  # Not supported
+# alt-shift-n = 'focus prev'  # Not supported
+# alt-p = 'focus-parent'  # Not supported
+# alt-shift-p = 'focus-child'  # Not supported
 
 # Switch to workspace
 alt-1 = 'workspace 1'
@@ -115,19 +115,16 @@ alt-ctrl-8 = ['move-node-to-workspace 8', 'workspace 8', 'exec-and-forget sketch
 alt-ctrl-9 = ['move-node-to-workspace 9', 'workspace 9', 'exec-and-forget sketchybar --trigger window_moved']
 alt-ctrl-0 = ['move-node-to-workspace 10', 'workspace 10', 'exec-and-forget sketchybar --trigger window_moved']
 
+# Gap controls - Not directly supported in Aerospace
+# alt-bracketleft = 'gaps inner -5'
+# alt-bracketright = 'gaps inner +5'
+
 # System
 alt-shift-slash = 'reload-config'
 
-# Gap controls
-alt-bracketleft = 'gaps inner -5'
-alt-bracketright = 'gaps inner +5'
-
-# Emergency commands
-alt-shift-slash = 'reload-config'
-
-# Scratchpad
-alt-minus = 'summon-from-scratchpad'
-alt-shift-minus = 'move-to-scratchpad'
+# Scratchpad - Not supported in Aerospace
+# alt-minus = 'summon-from-scratchpad'
+# alt-shift-minus = 'move-to-scratchpad'
 
 # Modes
 alt-rightSquareBracket = 'mode resize'
