@@ -17,9 +17,9 @@ on-focus-changed = [
 	'exec-and-forget sketchybar --trigger aerospace_focus_change FOCUSED_WORKSPACE=$AEROSPACE_FOCUSED_WORKSPACE',
 ]
 
-on-layout-change = [
-	'exec-and-forget sketchybar --trigger window_moved'
-]
+# on-layout-change = [
+# 	'exec-and-forget sketchybar --trigger window_moved'
+# ]
 
 
 on-focused-monitor-changed = ['move-mouse monitor-lazy-center']
@@ -38,28 +38,28 @@ outer.right = 10
 outer.top = [{ monitor.main = 32 }, { monitor.secondary = 32 }, 32]
 
 [mode.main.binding]
-# Core Navigation (WARS in Colemak -> WASD physical keys)
-alt-w = 'focus up'        # W key (same in both layouts)
-alt-a = 'focus left'      # A key (same in both layouts)
-alt-r = 'focus down'      # R in Colemak -> S physical key
-alt-s = 'focus right'     # S in Colemak -> D physical key
+# Core Navigation - Using WASD (standard layout)
+alt-w = 'focus up'
+alt-a = 'focus left'
+alt-s = 'focus down'
+alt-d = 'focus right'
 
-# Move window (WARS in Colemak -> WASD physical keys)
-alt-shift-w = 'move up'        # W key (same in both layouts)
-alt-shift-a = 'move left'      # A key (same in both layouts)
-alt-shift-r = 'move down'      # R in Colemak -> S physical key
-alt-shift-s = 'move right'     # S in Colemak -> D physical key
+# Move window
+alt-shift-w = 'move up'
+alt-shift-a = 'move left'
+alt-shift-s = 'move down'
+alt-shift-d = 'move right'
 
 # Resize window (using resize mode instead)
 # alt-ctrl keys now used for workspace movement
 
 # Window Management
 alt-q = 'close'
-alt-t = 'fullscreen'              # F in Colemak -> T physical key
-alt-f = 'layout floating tiling'  # T in Colemak -> F physical key
-alt-h = 'join-with right'          # H key (same in both layouts)
-alt-v = 'join-with down'           # V key (same in both layouts)
-alt-k = 'layout tiles accordion'   # E in Colemak -> K physical key
+alt-f = 'fullscreen'
+alt-t = 'layout floating tiling'
+alt-h = 'join-with right'
+alt-v = 'join-with down'
+alt-e = 'layout tiles accordion'
 alt-space = 'focus-back-and-forth'
 
 # Workspace navigation
@@ -93,11 +93,11 @@ alt-shift-8 = ['move-node-to-workspace 8', 'exec-and-forget sketchybar --trigger
 alt-shift-9 = ['move-node-to-workspace 9', 'exec-and-forget sketchybar --trigger window_moved']
 alt-shift-0 = ['move-node-to-workspace 10', 'exec-and-forget sketchybar --trigger window_moved']
 
-# Move window to adjacent workspace and follow (WARS in Colemak -> WASD physical keys)
-alt-ctrl-w = ['move-node-to-monitor up', 'focus-monitor up', 'exec-and-forget sketchybar --trigger window_moved']       # W key (same)
-alt-ctrl-a = ['move-node-to-workspace prev', 'workspace prev', 'exec-and-forget sketchybar --trigger window_moved']     # A key (same)
-alt-ctrl-r = ['move-node-to-monitor down', 'focus-monitor down', 'exec-and-forget sketchybar --trigger window_moved']   # R -> S physical
-alt-ctrl-s = ['move-node-to-workspace next', 'workspace next', 'exec-and-forget sketchybar --trigger window_moved']     # S -> D physical
+# Move window to adjacent workspace and follow
+alt-ctrl-w = ['move-node-to-monitor up', 'focus-monitor up', 'exec-and-forget sketchybar --trigger window_moved']
+alt-ctrl-a = ['move-node-to-workspace prev', 'workspace prev', 'exec-and-forget sketchybar --trigger window_moved']
+alt-ctrl-s = ['move-node-to-monitor down', 'focus-monitor down', 'exec-and-forget sketchybar --trigger window_moved']
+alt-ctrl-d = ['move-node-to-workspace next', 'workspace next', 'exec-and-forget sketchybar --trigger window_moved']
 
 # Move and follow to workspace by number
 alt-ctrl-1 = ['move-node-to-workspace 1', 'workspace 1', 'exec-and-forget sketchybar --trigger window_moved']
@@ -118,11 +118,11 @@ alt-shift-slash = 'reload-config'
 alt-rightSquareBracket = 'mode resize'
 
 [mode.resize.binding]
-# Resize mode (WARS in Colemak -> WASD physical keys)
-w = 'resize height -50'    # W key (same in both layouts)
-a = 'resize width -50'     # A key (same in both layouts)
-r = 'resize height +50'    # R in Colemak -> S physical key
-s = 'resize width +50'     # S in Colemak -> D physical key
+# Resize mode
+w = 'resize height -50'
+a = 'resize width -50'
+s = 'resize height +50'
+d = 'resize width +50'
 esc = 'mode main'
 enter = 'mode main'
 

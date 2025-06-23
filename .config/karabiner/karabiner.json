@@ -537,12 +537,12 @@
             ]
           },
           {
-            "description": "Media Controls (Win+I/J/K/O)",
+            "description": "Media Controls",
             "manipulators": [
               {
-                "description": "Win+I (Colemak I -> L physical) volume up",
+                "description": "Win+U (physical U key) volume up",
                 "from": {
-                  "key_code": "l",
+                  "key_code": "u",
                   "modifiers": {
                     "mandatory": ["left_option"]
                   }
@@ -555,11 +555,11 @@
                 "type": "basic"
               },
               {
-                "description": "Win+Shift+I (Colemak I -> L physical) volume down",
+                "description": "Win+E (physical E key) volume down",
                 "from": {
-                  "key_code": "l",
+                  "key_code": "e",
                   "modifiers": {
-                    "mandatory": ["left_option", "shift"]
+                    "mandatory": ["left_option"]
                   }
                 },
                 "to": [
@@ -570,9 +570,9 @@
                 "type": "basic"
               },
               {
-                "description": "Win+U mute",
+                "description": "Win+O (physical O key) mute",
                 "from": {
-                  "key_code": "u",
+                  "key_code": "o",
                   "modifiers": {
                     "mandatory": ["left_option"]
                   }
@@ -585,9 +585,9 @@
                 "type": "basic"
               },
               {
-                "description": "Win+J (Colemak J -> Y physical) play/pause",
+                "description": "Win+P (physical P key) play/pause",
                 "from": {
-                  "key_code": "y",
+                  "key_code": "p",
                   "modifiers": {
                     "mandatory": ["left_option"]
                   }
@@ -600,39 +600,9 @@
                 "type": "basic"
               },
               {
-                "description": "Win+K (Colemak K -> E physical) next track",
+                "description": "Win+I (physical I key) brightness up",
                 "from": {
-                  "key_code": "e",
-                  "modifiers": {
-                    "mandatory": ["left_option"]
-                  }
-                },
-                "to": [
-                  {
-                    "key_code": "fastforward"
-                  }
-                ],
-                "type": "basic"
-              },
-              {
-                "description": "Win+Shift+K (Colemak K -> E physical) previous track",
-                "from": {
-                  "key_code": "e",
-                  "modifiers": {
-                    "mandatory": ["left_option", "shift"]
-                  }
-                },
-                "to": [
-                  {
-                    "key_code": "rewind"
-                  }
-                ],
-                "type": "basic"
-              },
-              {
-                "description": "Win+O (Colemak O -> semicolon physical) brightness up",
-                "from": {
-                  "key_code": "semicolon",
+                  "key_code": "i",
                   "modifiers": {
                     "mandatory": ["left_option"]
                   }
@@ -645,11 +615,11 @@
                 "type": "basic"
               },
               {
-                "description": "Win+Shift+O (Colemak O -> semicolon physical) brightness down",
+                "description": "Win+Y (physical Y key) brightness down",
                 "from": {
-                  "key_code": "semicolon",
+                  "key_code": "y",
                   "modifiers": {
-                    "mandatory": ["left_option", "shift"]
+                    "mandatory": ["left_option"]
                   }
                 },
                 "to": [
@@ -662,12 +632,12 @@
             ]
           },
           {
-            "description": "Screenshot Controls (Win+Y)",
+            "description": "Screenshot Controls (Win+O)",
             "manipulators": [
               {
-                "description": "Win+Y full screenshot to clipboard",
+                "description": "Win+O full screenshot to clipboard",
                 "from": {
-                  "key_code": "y",
+                  "key_code": "o",
                   "modifiers": {
                     "mandatory": ["left_option"]
                   }
@@ -681,9 +651,9 @@
                 "type": "basic"
               },
               {
-                "description": "Win+Shift+Y area screenshot to clipboard",
+                "description": "Win+Shift+O area screenshot to clipboard",
                 "from": {
-                  "key_code": "y",
+                  "key_code": "o",
                   "modifiers": {
                     "mandatory": ["left_option", "shift"]
                   }
@@ -697,9 +667,9 @@
                 "type": "basic"
               },
               {
-                "description": "Win+Ctrl+Y full screenshot to file",
+                "description": "Win+Ctrl+O full screenshot to file",
                 "from": {
-                  "key_code": "y",
+                  "key_code": "o",
                   "modifiers": {
                     "mandatory": ["left_option", "control"]
                   }
@@ -713,9 +683,9 @@
                 "type": "basic"
               },
               {
-                "description": "Win+Ctrl+Shift+Y area screenshot to file",
+                "description": "Win+Ctrl+Shift+O area screenshot to file",
                 "from": {
-                  "key_code": "y",
+                  "key_code": "o",
                   "modifiers": {
                     "mandatory": ["left_option", "control", "shift"]
                   }
@@ -729,9 +699,9 @@
                 "type": "basic"
               },
               {
-                "description": "Win+Alt+Y window screenshot to clipboard",
+                "description": "Win+Alt+O window screenshot to clipboard",
                 "from": {
-                  "key_code": "y",
+                  "key_code": "o",
                   "modifiers": {
                     "mandatory": ["left_option", "left_alt"]
                   }
