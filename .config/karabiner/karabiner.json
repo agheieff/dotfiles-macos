@@ -300,7 +300,7 @@
                 "type": "basic"
               },
               {
-                "description": "Win+D (Colemak G) opens Spotlight",
+                "description": "Win+D (Colemak D -> G physical) opens Spotlight",
                 "from": {
                   "key_code": "g",
                   "modifiers": {
@@ -540,9 +540,9 @@
             "description": "Media Controls (Win+I/J/K/O)",
             "manipulators": [
               {
-                "description": "Win+I (Colemak U) volume up",
+                "description": "Win+I (Colemak I -> L physical) volume up",
                 "from": {
-                  "key_code": "u",
+                  "key_code": "l",
                   "modifiers": {
                     "mandatory": ["left_option"]
                   }
@@ -555,9 +555,9 @@
                 "type": "basic"
               },
               {
-                "description": "Win+Shift+I (Colemak U) volume down",
+                "description": "Win+Shift+I (Colemak I -> L physical) volume down",
                 "from": {
-                  "key_code": "u",
+                  "key_code": "l",
                   "modifiers": {
                     "mandatory": ["left_option", "shift"]
                   }
@@ -570,9 +570,9 @@
                 "type": "basic"
               },
               {
-                "description": "Win+U (Colemak I) mute",
+                "description": "Win+U mute",
                 "from": {
-                  "key_code": "i",
+                  "key_code": "u",
                   "modifiers": {
                     "mandatory": ["left_option"]
                   }
@@ -585,7 +585,7 @@
                 "type": "basic"
               },
               {
-                "description": "Win+J (Colemak Y) play/pause",
+                "description": "Win+J (Colemak J -> Y physical) play/pause",
                 "from": {
                   "key_code": "y",
                   "modifiers": {
@@ -600,9 +600,9 @@
                 "type": "basic"
               },
               {
-                "description": "Win+K (Colemak N) next track",
+                "description": "Win+K (Colemak K -> E physical) next track",
                 "from": {
-                  "key_code": "n",
+                  "key_code": "e",
                   "modifiers": {
                     "mandatory": ["left_option"]
                   }
@@ -615,9 +615,9 @@
                 "type": "basic"
               },
               {
-                "description": "Win+Shift+K (Colemak N) previous track",
+                "description": "Win+Shift+K (Colemak K -> E physical) previous track",
                 "from": {
-                  "key_code": "n",
+                  "key_code": "e",
                   "modifiers": {
                     "mandatory": ["left_option", "shift"]
                   }
@@ -630,7 +630,7 @@
                 "type": "basic"
               },
               {
-                "description": "Win+O (Colemak semicolon) brightness up",
+                "description": "Win+O (Colemak O -> semicolon physical) brightness up",
                 "from": {
                   "key_code": "semicolon",
                   "modifiers": {
@@ -645,7 +645,7 @@
                 "type": "basic"
               },
               {
-                "description": "Win+Shift+O (Colemak semicolon) brightness down",
+                "description": "Win+Shift+O (Colemak O -> semicolon physical) brightness down",
                 "from": {
                   "key_code": "semicolon",
                   "modifiers": {
@@ -662,12 +662,12 @@
             ]
           },
           {
-            "description": "Screenshot Controls (Win+Y - Colemak O)",
+            "description": "Screenshot Controls (Win+Y)",
             "manipulators": [
               {
-                "description": "Win+Y (Colemak O) full screenshot to clipboard",
+                "description": "Win+Y full screenshot to clipboard",
                 "from": {
-                  "key_code": "o",
+                  "key_code": "y",
                   "modifiers": {
                     "mandatory": ["left_option"]
                   }
@@ -681,9 +681,9 @@
                 "type": "basic"
               },
               {
-                "description": "Win+Shift+Y (Colemak O) area screenshot to clipboard",
+                "description": "Win+Shift+Y area screenshot to clipboard",
                 "from": {
-                  "key_code": "o",
+                  "key_code": "y",
                   "modifiers": {
                     "mandatory": ["left_option", "shift"]
                   }
@@ -697,9 +697,9 @@
                 "type": "basic"
               },
               {
-                "description": "Win+Ctrl+Y (Colemak O) full screenshot to file",
+                "description": "Win+Ctrl+Y full screenshot to file",
                 "from": {
-                  "key_code": "o",
+                  "key_code": "y",
                   "modifiers": {
                     "mandatory": ["left_option", "control"]
                   }
@@ -713,9 +713,9 @@
                 "type": "basic"
               },
               {
-                "description": "Win+Ctrl+Shift+Y (Colemak O) area screenshot to file",
+                "description": "Win+Ctrl+Shift+Y area screenshot to file",
                 "from": {
-                  "key_code": "o",
+                  "key_code": "y",
                   "modifiers": {
                     "mandatory": ["left_option", "control", "shift"]
                   }
@@ -729,9 +729,9 @@
                 "type": "basic"
               },
               {
-                "description": "Win+Alt+Y (Colemak O) window screenshot to clipboard",
+                "description": "Win+Alt+Y window screenshot to clipboard",
                 "from": {
-                  "key_code": "o",
+                  "key_code": "y",
                   "modifiers": {
                     "mandatory": ["left_option", "left_alt"]
                   }
