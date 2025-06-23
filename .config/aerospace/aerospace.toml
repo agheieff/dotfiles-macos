@@ -38,17 +38,17 @@ outer.right = 10
 outer.top = [{ monitor.main = 32 }, { monitor.secondary = 32 }, 32]
 
 [mode.main.binding]
-# Core Navigation - Using WARS (actual letters in Colemak)
+# Core Navigation - Using WASD (for WARS physical keys in Colemak)
 alt-w = 'focus up'
 alt-a = 'focus left'
-alt-r = 'focus down'
-alt-s = 'focus right'
+alt-s = 'focus down'
+alt-d = 'focus right'
 
 # Move window
 alt-shift-w = 'move up'
 alt-shift-a = 'move left'
-alt-shift-r = 'move down'
-alt-shift-s = 'move right'
+alt-shift-s = 'move down'
+alt-shift-d = 'move right'
 
 # Window Management
 alt-q = 'close'
@@ -97,11 +97,11 @@ alt-shift-8 = ['move-node-to-workspace 8', 'exec-and-forget sketchybar --trigger
 alt-shift-9 = ['move-node-to-workspace 9', 'exec-and-forget sketchybar --trigger window_moved']
 alt-shift-0 = ['move-node-to-workspace 10', 'exec-and-forget sketchybar --trigger window_moved']
 
-# Resize window (Ctrl + WARS)
+# Resize window (Ctrl + WASD)
 alt-ctrl-w = 'resize height -50'
 alt-ctrl-a = 'resize width -50'
-alt-ctrl-r = 'resize height +50'
-alt-ctrl-s = 'resize width +50'
+alt-ctrl-s = 'resize height +50'
+alt-ctrl-d = 'resize width +50'
 
 # Move and follow to workspace by number
 alt-ctrl-1 = ['move-node-to-workspace 1', 'workspace 1', 'exec-and-forget sketchybar --trigger window_moved']
@@ -130,11 +130,11 @@ alt-shift-slash = 'reload-config'
 alt-rightSquareBracket = 'mode resize'
 
 [mode.resize.binding]
-# Resize mode (WARS keys)
+# Resize mode (WASD keys)
 w = 'resize height -50'
 a = 'resize width -50'
-r = 'resize height +50'
-s = 'resize width +50'
+s = 'resize height +50'
+d = 'resize width +50'
 esc = 'mode main'
 enter = 'mode main'
 
