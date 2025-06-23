@@ -1,0 +1,34 @@
+# Ghostty configuration for macOS
+# Adapted from Arch Linux config
+
+# Disable close confirmation dialog
+confirm-close-surface = false
+
+# Hide mouse cursor while typing (less distraction)
+mouse-hide-while-typing = true
+
+# Add some breathing room around the text
+window-padding-x = 10
+window-padding-y = 10
+
+# Better cursor visibility
+cursor-style = block
+cursor-opacity = 0.8
+
+# Font settings
+# Using Hack Nerd Font which we already have installed
+font-family = Hack Nerd Font
+font-size = 13
+
+# Dark theme (you can list all with: ghostty +list-themes)
+theme = Dracula
+
+# macOS specific settings
+macos-titlebar-style = tabs
+macos-option-as-alt = true
+
+# Better performance
+window-vsync = true
+
+# Useful keybindings (Cmd+C/V for copy/paste on macOS)
+# Copy-on-select is enabled by default

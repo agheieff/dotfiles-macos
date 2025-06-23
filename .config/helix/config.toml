@@ -1,0 +1,131 @@
+# Helix Configuration for macOS
+# Adapted from Arch Linux config
+
+theme = "catppuccin_mocha"  # Nice dark theme, change to your preference
+
+[editor]
+line-number = "relative"     # Relative line numbers for easier navigation
+cursorline = true           # Highlight current line
+cursorcolumn = false        # Column highlight can be distracting
+scrolloff = 8               # Keep 8 lines visible above/below cursor
+mouse = true                # Enable mouse support
+middle-click-paste = true   # Middle click to paste
+scroll-lines = 3            # Scroll 3 lines at a time
+shell = ["sh", "-c"]        # Shell for running commands
+completion-trigger-len = 2  # Trigger completion after 2 characters
+auto-pairs = true           # Auto close brackets, quotes, etc.
+auto-format = true          # Format on save
+auto-save = false           # Manual saving is safer
+idle-timeout = 400          # Faster completion popups
+preview-completion-insert = true
+completion-replace = false  # Don't replace word, just insert
+color-modes = true          # Show mode in statusline with color
+bufferline = "multiple"     # Show bufferline when multiple buffers open
+true-color = true           # Enable 24-bit colors
+
+[editor.statusline]
+left = ["mode", "spinner", "file-name", "file-modification-indicator"]
+center = ["file-type"]
+right = ["diagnostics", "selections", "position", "file-encoding", "file-line-ending", "total-line-numbers"]
+separator = "│"
+mode.normal = "NORMAL"
+mode.insert = "INSERT"
+mode.select = "SELECT"
+
+[editor.lsp]
+enable = true
+display-messages = true
+display-inlay-hints = true
+display-signature-help-docs = true
+snippets = true
+goto-reference-include-declaration = true
+
+[editor.cursor-shape]
+insert = "bar"
+normal = "block"
+select = "underline"
+
+[editor.file-picker]
+hidden = false              # Show hidden files
+follow-symlinks = true      # Follow symlinks
+git-ignore = true           # Respect .gitignore
+git-global = true           # Respect global .gitignore
+git-exclude = true          # Respect .git/info/exclude
+parents = true              # Show parent directories
+ignore = true               # Respect .ignore files
+max-depth = 10              # Maximum depth to traverse
+
+
+[editor.search]
+smart-case = true           # Case insensitive unless uppercase used
+wrap-around = true          # Wrap search around document
+
+[editor.whitespace]
+render = "all"
+characters = { space = "·", nbsp = "⍽", nnbsp = "␣", tab = "→", newline = "⏎", tabpad = "·" }
+
+[editor.indent-guides]
+render = true
+character = "│"
+skip-levels = 1
+
+[editor.gutters]
+layout = ["diagnostics", "spacer", "line-numbers", "spacer", "diff"]
+
+[editor.soft-wrap]
+enable = false              # Disable by default, toggle with :set soft-wrap.enable true
+max-wrap = 25               # Wrap at 25 columns from viewport edge
+max-indent-retain = 0
+wrap-indicator = ""         # Show wrap indicator
+
+# Keybindings - adapted for macOS
+[keys.normal]
+# Quick save and quit
+C-s = ":w"                  # Ctrl-s to save
+C-q = ":q"                  # Ctrl-q to quit
+C-c = "normal_mode"         # Ctrl-c to exit insert mode (additional to Esc)
+
+# Better navigation
+C-d = ["half_page_down", "align_view_center"]
+C-u = ["half_page_up", "align_view_center"]
+C-f = "page_down"
+C-b = "page_up"
+
+# Window management
+C-w = { v = ":vsplit", s = ":hsplit", c = ":bc", q = ":q" }
+
+# Quick actions
+space = { w = ":w", q = ":q", x = ":x", b = "buffer_picker", f = "file_picker", F = "file_picker_in_current_directory", r = "symbol_picker" }
+
+# Tab navigation
+tab = "goto_next_buffer"
+S-tab = "goto_previous_buffer"
+
+# Better undo/redo
+U = "redo"
+
+# Center after search
+n = ["search_next", "align_view_center"]
+N = ["search_prev", "align_view_center"]
+
+# Quick line operations
+X = "extend_line_above"
+A-j = ["extend_to_line_bounds", "delete_selection", "paste_after"]
+A-k = ["extend_to_line_bounds", "delete_selection", "move_line_up", "paste_before"]
+
+[keys.insert]
+# Completion control
+C-space = "completion"
+C-n = "completion"
+C-c = "normal_mode"         # Alternative to Esc
+
+# Navigation in insert mode
+C-h = "move_char_left"
+C-l = "move_char_right"
+C-j = "move_line_down"
+C-k = "move_line_up"
+
+[keys.select]
+# Make selection operations more intuitive
+tab = "indent"
+S-tab = "unindent"

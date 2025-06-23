@@ -1,0 +1,198 @@
+# Language Server Protocol (LSP) Configuration for macOS
+# Configure language servers for better development experience
+
+# Python
+[[language]]
+name = "python"
+language-servers = ["pylsp", "ruff"]
+formatter = { command = "black", args = ["--quiet", "-"] }
+auto-format = true
+
+[language-server.pylsp.config.pylsp]
+plugins.pycodestyle.enabled = false
+plugins.mccabe.enabled = false
+plugins.pyflakes.enabled = false
+plugins.flake8.enabled = false
+
+[language-server.ruff]
+command = "ruff-lsp"
+
+# Rust
+[[language]]
+name = "rust"
+language-servers = ["rust-analyzer"]
+formatter = { command = "rustfmt" }
+auto-format = true
+
+[language-server.rust-analyzer]
+command = "rust-analyzer"
+
+[language-server.rust-analyzer.config]
+checkOnSave.command = "clippy"
+inlayHints.bindingModeHints.enable = true
+inlayHints.closureCaptureHints.enable = true
+inlayHints.closureReturnTypeHints.enable = "always"
+inlayHints.discriminantHints.enable = "always"
+inlayHints.lifetimeElisionHints.enable = "skip_trivial"
+inlayHints.typeHints.enable = true
+
+# JavaScript/TypeScript
+[[language]]
+name = "javascript"
+language-servers = ["typescript-language-server"]
+formatter = { command = "prettier", args = ["--parser", "typescript"] }
+auto-format = true
+
+[[language]]
+name = "typescript"
+language-servers = ["typescript-language-server"]
+formatter = { command = "prettier", args = ["--parser", "typescript"] }
+auto-format = true
+
+[[language]]
+name = "tsx"
+language-servers = ["typescript-language-server"]
+formatter = { command = "prettier", args = ["--parser", "typescript"] }
+auto-format = true
+
+[[language]]
+name = "jsx"
+language-servers = ["typescript-language-server"]
+formatter = { command = "prettier", args = ["--parser", "typescript"] }
+auto-format = true
+
+[language-server.typescript-language-server]
+command = "typescript-language-server"
+args = ["--stdio"]
+
+# Go
+[[language]]
+name = "go"
+language-servers = ["gopls"]
+formatter = { command = "gofmt" }
+auto-format = true
+
+[language-server.gopls]
+command = "gopls"
+
+[language-server.gopls.config]
+gofumpt = true
+staticcheck = true
+
+# C/C++
+[[language]]
+name = "c"
+language-servers = ["clangd"]
+formatter = { command = "clang-format" }
+auto-format = true
+
+[[language]]
+name = "cpp"
+language-servers = ["clangd"]
+formatter = { command = "clang-format" }
+auto-format = true
+
+[language-server.clangd]
+command = "clangd"
+args = ["--background-index", "--clang-tidy", "--completion-style=detailed"]
+
+# HTML/CSS
+[[language]]
+name = "html"
+language-servers = ["vscode-html-language-server"]
+formatter = { command = "prettier", args = ["--parser", "html"] }
+auto-format = true
+
+[[language]]
+name = "css"
+language-servers = ["vscode-css-language-server"]
+formatter = { command = "prettier", args = ["--parser", "css"] }
+auto-format = true
+
+[language-server.vscode-html-language-server]
+command = "vscode-html-language-server"
+args = ["--stdio"]
+
+[language-server.vscode-css-language-server]
+command = "vscode-css-language-server"
+args = ["--stdio"]
+
+# JSON
+[[language]]
+name = "json"
+language-servers = ["vscode-json-language-server"]
+formatter = { command = "prettier", args = ["--parser", "json"] }
+auto-format = true
+
+[language-server.vscode-json-language-server]
+command = "vscode-json-language-server"
+args = ["--stdio"]
+
+# YAML
+[[language]]
+name = "yaml"
+language-servers = ["yaml-language-server"]
+formatter = { command = "prettier", args = ["--parser", "yaml"] }
+auto-format = true
+
+[language-server.yaml-language-server]
+command = "yaml-language-server"
+args = ["--stdio"]
+
+# Markdown
+[[language]]
+name = "markdown"
+language-servers = ["marksman"]
+formatter = { command = "prettier", args = ["--parser", "markdown"] }
+auto-format = false  # Often you don't want auto-format for markdown
+
+[language-server.marksman]
+command = "marksman"
+args = ["server"]
+
+# Bash/Shell
+[[language]]
+name = "bash"
+language-servers = ["bash-language-server"]
+formatter = { command = "shfmt", args = ["-i", "2"] }
+auto-format = true
+
+[language-server.bash-language-server]
+command = "bash-language-server"
+args = ["start"]
+
+# TOML
+[[language]]
+name = "toml"
+formatter = { command = "taplo", args = ["fmt", "-"] }
+auto-format = true
+
+# Lua
+[[language]]
+name = "lua"
+language-servers = ["lua-language-server"]
+formatter = { command = "stylua", args = ["-"] }
+auto-format = true
+
+[language-server.lua-language-server]
+command = "lua-language-server"
+
+# Nix
+[[language]]
+name = "nix"
+language-servers = ["nil"]
+formatter = { command = "nixpkgs-fmt" }
+auto-format = true
+
+[language-server.nil]
+command = "nil"
+
+# Swift (macOS specific)
+[[language]]
+name = "swift"
+language-servers = ["sourcekit-lsp"]
+formatter = { command = "swift-format" }
+auto-format = true
+
+[language-server.sourcekit-lsp]
+command = "sourcekit-lsp"
