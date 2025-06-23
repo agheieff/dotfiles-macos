@@ -304,13 +304,232 @@
                 "from": {
                   "key_code": "g",
                   "modifiers": {
-                    "mandatory": ["left_option"]
+                    "mandatory": ["left_option"],
+                    "optional": ["any"]
                   }
                 },
                 "to": [
                   {
                     "key_code": "spacebar",
                     "modifiers": ["command"]
+                  }
+                ],
+                "type": "basic"
+              }
+            ]
+          },
+          {
+            "description": "Browser-specific Tab/Window Management",
+            "manipulators": [
+              {
+                "description": "Ctrl+W closes tab in browsers",
+                "conditions": [
+                  {
+                    "type": "frontmost_application_if",
+                    "bundle_identifiers": [
+                      "^com\\.apple\\.Safari$",
+                      "^com\\.google\\.Chrome$",
+                      "^org\\.mozilla\\.firefox$",
+                      "^org\\.mozilla\\.firefoxdeveloperedition$",
+                      "^com\\.microsoft\\.edgemac$",
+                      "^com\\.brave\\.Browser$",
+                      "^company\\.thebrowser\\.Browser$",
+                      "^com\\.operasoftware\\.Opera$",
+                      "^com\\.vivaldi\\.Vivaldi$",
+                      "^app\\.zen-browser\\.zen$"
+                    ]
+                  }
+                ],
+                "from": {
+                  "key_code": "w",
+                  "modifiers": {
+                    "mandatory": ["control"]
+                  }
+                },
+                "to": [
+                  {
+                    "key_code": "w",
+                    "modifiers": ["command"]
+                  }
+                ],
+                "type": "basic"
+              },
+              {
+                "description": "Win+Q closes window in browsers",
+                "conditions": [
+                  {
+                    "type": "frontmost_application_if",
+                    "bundle_identifiers": [
+                      "^com\\.apple\\.Safari$",
+                      "^com\\.google\\.Chrome$",
+                      "^org\\.mozilla\\.firefox$",
+                      "^org\\.mozilla\\.firefoxdeveloperedition$",
+                      "^com\\.microsoft\\.edgemac$",
+                      "^com\\.brave\\.Browser$",
+                      "^company\\.thebrowser\\.Browser$",
+                      "^com\\.operasoftware\\.Opera$",
+                      "^com\\.vivaldi\\.Vivaldi$",
+                      "^app\\.zen-browser\\.zen$"
+                    ]
+                  }
+                ],
+                "from": {
+                  "key_code": "q",
+                  "modifiers": {
+                    "mandatory": ["left_option"]
+                  }
+                },
+                "to": [
+                  {
+                    "key_code": "w",
+                    "modifiers": ["command", "shift"]
+                  }
+                ],
+                "type": "basic"
+            ]
+          },
+          {
+            "description": "Window and App Management",
+            "manipulators": [
+              {
+                "description": "Win+Q closes window (Cmd+W) - non-browsers",
+                "from": {
+                  "key_code": "q",
+                  "modifiers": {
+                    "mandatory": ["left_option"]
+                  }
+                },
+                "to": [
+                  {
+                    "key_code": "w",
+                    "modifiers": ["command"]
+                  }
+                ],
+                "type": "basic"
+              },
+              {
+                "description": "Win+Shift+Q quits app (Cmd+Q)",
+                "from": {
+                  "key_code": "q",
+                  "modifiers": {
+                    "mandatory": ["left_option", "shift"]
+                  }
+                },
+                "to": [
+                  {
+                    "key_code": "q",
+                    "modifiers": ["command"]
+                  }
+                ],
+                "type": "basic"
+              },
+              {
+                "description": "Disable Cmd+W",
+                "conditions": [
+                  {
+                    "type": "frontmost_application_unless",
+                    "bundle_identifiers": [
+                      "^com\\.apple\\.Safari$",
+                      "^com\\.google\\.Chrome$",
+                      "^org\\.mozilla\\.firefox$",
+                      "^org\\.mozilla\\.firefoxdeveloperedition$",
+                      "^com\\.microsoft\\.edgemac$",
+                      "^com\\.brave\\.Browser$",
+                      "^company\\.thebrowser\\.Browser$",
+                      "^com\\.operasoftware\\.Opera$",
+                      "^com\\.vivaldi\\.Vivaldi$",
+                      "^app\\.zen-browser\\.zen$"
+                    ]
+                  }
+                ],
+                "from": {
+                  "key_code": "w",
+                  "modifiers": {
+                    "mandatory": ["command"]
+                  }
+                },
+                "to": [
+                  {
+                    "key_code": "vk_none"
+                  }
+                ],
+                "type": "basic"
+              },
+              {
+                "description": "Disable Cmd+Q",
+                "from": {
+                  "key_code": "q",
+                  "modifiers": {
+                    "mandatory": ["command"]
+                  }
+                },
+                "to": [
+                  {
+                    "key_code": "vk_none"
+                  }
+                ],
+                "type": "basic"
+              },
+              {
+                "description": "Disable Ctrl+Tab for app switching (non-browsers)",
+                "conditions": [
+                  {
+                    "type": "frontmost_application_unless",
+                    "bundle_identifiers": [
+                      "^com\\.apple\\.Safari$",
+                      "^com\\.google\\.Chrome$",
+                      "^org\\.mozilla\\.firefox$",
+                      "^org\\.mozilla\\.firefoxdeveloperedition$",
+                      "^com\\.microsoft\\.edgemac$",
+                      "^com\\.brave\\.Browser$",
+                      "^company\\.thebrowser\\.Browser$",
+                      "^com\\.operasoftware\\.Opera$",
+                      "^com\\.vivaldi\\.Vivaldi$",
+                      "^app\\.zen-browser\\.zen$"
+                    ]
+                  }
+                ],
+                "from": {
+                  "key_code": "tab",
+                  "modifiers": {
+                    "mandatory": ["control"]
+                  }
+                },
+                "to": [
+                  {
+                    "key_code": "vk_none"
+                  }
+                ],
+                "type": "basic"
+              },
+              {
+                "description": "Disable Ctrl+Shift+Tab (non-browsers)",
+                "conditions": [
+                  {
+                    "type": "frontmost_application_unless",
+                    "bundle_identifiers": [
+                      "^com\\.apple\\.Safari$",
+                      "^com\\.google\\.Chrome$",
+                      "^org\\.mozilla\\.firefox$",
+                      "^org\\.mozilla\\.firefoxdeveloperedition$",
+                      "^com\\.microsoft\\.edgemac$",
+                      "^com\\.brave\\.Browser$",
+                      "^company\\.thebrowser\\.Browser$",
+                      "^com\\.operasoftware\\.Opera$",
+                      "^com\\.vivaldi\\.Vivaldi$",
+                      "^app\\.zen-browser\\.zen$"
+                    ]
+                  }
+                ],
+                "from": {
+                  "key_code": "tab",
+                  "modifiers": {
+                    "mandatory": ["control", "shift"]
+                  }
+                },
+                "to": [
+                  {
+                    "key_code": "vk_none"
                   }
                 ],
                 "type": "basic"
