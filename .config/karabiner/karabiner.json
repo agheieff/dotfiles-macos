@@ -94,7 +94,7 @@
                                     "key_code": "c",
                                     "modifiers": {
                                         "mandatory": [
-                                            "control",
+                                            "command",
                                             "shift"
                                         ]
                                     }
@@ -129,7 +129,7 @@
                                     "key_code": "v",
                                     "modifiers": {
                                         "mandatory": [
-                                            "control",
+                                            "command",
                                             "shift"
                                         ]
                                     }
