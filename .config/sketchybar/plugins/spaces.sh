@@ -7,10 +7,66 @@ CONFIG_DIR="$(dirname "$PLUGIN_DIR")"
 # Source colors
 source "$CONFIG_DIR/colors.sh"
 
+# Function to get icon for an app
+get_app_icon() {
+  local app=$1
+  case "$app" in
+    "Safari") echo "󰖟" ;;
+    "Google Chrome"|"Chrome") echo "󰊯" ;;
+    "Firefox"|"Firefox Developer Edition") echo "󰈹" ;;
+    "Zen Browser") echo "󰈹" ;; # Firefox-based
+    "Terminal") echo "󰆍" ;;
+    "iTerm2") echo "󰆍" ;;
+    "Ghostty") echo "󰆍" ;;
+    "Code"|"Visual Studio Code") echo "󰨞" ;;
+    "Slack") echo "󰒱" ;;
+    "Discord") echo "󰙯" ;;
+    "Spotify") echo "󰓇" ;;
+    "Mail") echo "󰊫" ;;
+    "Messages") echo "󰍩" ;;
+    "Finder") echo "󰀶" ;;
+    "System Preferences"|"System Settings") echo "󰒓" ;;
+    "Preview") echo "󰋩" ;;
+    "Notes") echo "󰠮" ;;
+    "Calendar") echo "󰃭" ;;
+    "Music"|"Apple Music") echo "󰝚" ;;
+    "Xcode") echo "󰀵" ;;
+    # Microsoft Office apps
+    "Microsoft Teams"|"Teams") echo "󰊻" ;;
+    "Microsoft Outlook"|"Outlook") echo "󰴢" ;;
+    "Microsoft Word"|"Word") echo "󰈙" ;;
+    "Microsoft Excel"|"Excel") echo "󰈛" ;;
+    "Microsoft PowerPoint"|"PowerPoint") echo "󰈧" ;;
+    # LibreOffice
+    "LibreOffice"|"LibreOffice Writer") echo "󰷈" ;;
+    "LibreOffice Calc") echo "󰱾" ;;
+    "LibreOffice Impress") echo "󰐩" ;;
+    # AI/LLM apps
+    "LM Studio") echo "󰧑" ;;
+    "Cherry Studio") echo "󰚩" ;;
+    # System utilities
+    "Karabiner-Elements"|"Karabiner-EventViewer") echo "󰌌" ;;
+    *) echo "󰘔" ;; # Default app icon
+  esac
+}
+
 # Handle the aerospace_workspace_change event
 if [ "$SENDER" = "aerospace_workspace_change" ]; then
   # Get the new focused workspace from the event or query it
   CURRENT_WORKSPACE="${FOCUSED_WORKSPACE:-$(aerospace list-workspaces --focused)}"
+  
+  # Check for empty workspaces and remove them (except current)
+  items=$(sketchybar --query bar | jq -r '.items[] | select(startswith("space."))')
+  for item in $items; do
+    workspace="${item#space.}"
+    if [ "$workspace" != "$CURRENT_WORKSPACE" ]; then
+      # Check if workspace has any windows
+      apps=$(aerospace list-windows --workspace $workspace --format "%{app-name}" 2>/dev/null)
+      if [ -z "$apps" ]; then
+        sketchybar --remove space.$workspace
+      fi
+    fi
+  done
   
   # Quick highlight update for existing workspaces
   if sketchybar --query space.$CURRENT_WORKSPACE &>/dev/null; then
@@ -74,10 +130,33 @@ if [ "$SENDER" = "aerospace_workspace_change" ]; then
   if [ -n "$update_cmd" ]; then
     eval "sketchybar $update_cmd"
   fi
+  
+  # Schedule async icon update for the new workspace
+  (
+    sleep 0.05
+    apps=$(aerospace list-windows --workspace $CURRENT_WORKSPACE --format "%{app-name}" 2>/dev/null | sort | uniq)
+    icon_string="$CURRENT_WORKSPACE"
+    if [ -n "$apps" ]; then
+      icon_string="${icon_string}  "
+      first=true
+      while IFS= read -r app; do
+        icon=$(get_app_icon "$app")
+        if [ "$first" = true ]; then
+          icon_string="${icon_string}${icon}"
+          first=false
+        else
+          icon_string="${icon_string} ${icon}"
+        fi
+      done <<< "$apps"
+    fi
+    sketchybar --set space.$CURRENT_WORKSPACE icon="$icon_string"
+  ) &
+  
+  exit 0
 fi
 
 # Handle window movement events
-if [ "$SENDER" = "window_moved" ] || [ "$SENDER" = "front_app_switched" ]; then
+if [ "$SENDER" = "window_moved" ]; then
   # Update all visible workspaces efficiently
   visible_workspaces=$(sketchybar --query bar | jq -r '.items[] | select(startswith("space."))' | sed 's/space\.//')
   
@@ -97,7 +176,7 @@ if [ "$SENDER" = "window_moved" ] || [ "$SENDER" = "front_app_switched" ]; then
           icon_string="${icon_string}${icon}"
           first=false
         else
-          icon_string="${icon_string}   ${icon}"
+          icon_string="${icon_string} ${icon}"
         fi
       done
       IFS="$OLD_IFS"
@@ -124,47 +203,6 @@ cache_workspace_windows() {
 get_workspace_apps() {
   local workspace=$1
   aerospace list-windows --workspace $workspace --format "%{app-name}" 2>/dev/null | sort | uniq
-}
-
-# Function to get icon for an app
-get_app_icon() {
-  local app=$1
-  case "$app" in
-    "Safari") echo "󰖟" ;;
-    "Google Chrome"|"Chrome") echo "󰊯" ;;
-    "Firefox"|"Firefox Developer Edition") echo "󰈹" ;;
-    "Zen Browser") echo "󰈹" ;; # Firefox-based
-    "Terminal") echo "󰆍" ;;
-    "iTerm2") echo "󰆍" ;;
-    "Ghostty") echo "󰆍" ;;
-    "Code"|"Visual Studio Code") echo "󰨞" ;;
-    "Slack") echo "󰒱" ;;
-    "Discord") echo "󰙯" ;;
-    "Spotify") echo "󰓇" ;;
-    "Mail") echo "󰊫" ;;
-    "Messages") echo "󰍩" ;;
-    "Finder") echo "󰀶" ;;
-    "System Preferences"|"System Settings") echo "󰒓" ;;
-    "Preview") echo "󰋩" ;;
-    "Notes") echo "󰠮" ;;
-    "Calendar") echo "󰃭" ;;
-    "Music"|"Apple Music") echo "󰝚" ;;
-    "Xcode") echo "󰀵" ;;
-    # Microsoft Office apps
-    "Microsoft Teams"|"Teams") echo "󰊻" ;;
-    "Microsoft Outlook"|"Outlook") echo "󰴢" ;;
-    "Microsoft Word"|"Word") echo "󰈙" ;;
-    "Microsoft Excel"|"Excel") echo "󰈛" ;;
-    "Microsoft PowerPoint"|"PowerPoint") echo "󰈧" ;;
-    # LibreOffice
-    "LibreOffice"|"LibreOffice Writer") echo "󰷈" ;;
-    "LibreOffice Calc") echo "󰱾" ;;
-    "LibreOffice Impress") echo "󰐩" ;;
-    # AI/LLM apps
-    "LM Studio") echo "󰧑" ;;
-    "Cherry Studio") echo "󰚩" ;;
-    *) echo "󰘔" ;; # Default app icon
-  esac
 }
 
 # Get all workspaces with windows (don't cache all windows, too slow)
@@ -210,7 +248,7 @@ for workspace in $WORKSPACES_WITH_WINDOWS; do
         icon_string="${icon_string}${icon}"
         first=false
       else
-        icon_string="${icon_string}   ${icon}"  # Three spaces between icons
+        icon_string="${icon_string} ${icon}"  # One space between icons (reduced by ~60%)
       fi
     done
     IFS="$OLD_IFS"

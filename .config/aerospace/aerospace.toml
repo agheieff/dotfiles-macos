@@ -17,6 +17,10 @@ on-focus-changed = [
 	'exec-and-forget sketchybar --trigger aerospace_focus_change FOCUSED_WORKSPACE=$AEROSPACE_FOCUSED_WORKSPACE',
 ]
 
+# on-window-detected = [
+# 	{ run = 'exec-and-forget sketchybar --trigger window_moved' }
+# ]
+
 # on-layout-change = [
 # 	'exec-and-forget sketchybar --trigger window_moved'
 # ]
@@ -35,7 +39,7 @@ inner.horizontal = 10
 inner.vertical = 10
 outer.left = 10
 outer.right = 10
-outer.top = [{ monitor.main = 32 }, { monitor.secondary = 32 }, 32]
+outer.top = [{ monitor.main = 0 }, { monitor.secondary = 0 }, 0]
 
 [mode.main.binding]
 # Core Navigation - Using WASD (for WARS physical keys in Colemak)
@@ -127,7 +131,7 @@ alt-shift-slash = 'reload-config'
 # alt-shift-minus = 'move-to-scratchpad'
 
 # Modes
-alt-rightSquareBracket = 'mode resize'
+# "alt-]" = 'mode resize'  # TODO: Fix bracket key binding
 
 [mode.resize.binding]
 # Resize mode (WASD keys)

@@ -28,6 +28,12 @@ export ICON_MIC=󰍬
 export ICON_MIC_MUTE=󰍭
 export ICON_BATTERY_FULL=󰁹
 export ICON_BATTERY_75=󰂁
+
+# Brightness Icons
+export BRIGHTNESS_ICON=󰃠
+export BRIGHTNESS_50_ICON=󰃟
+export BRIGHTNESS_25_ICON=󰃞
+export BRIGHTNESS_0_ICON=󰃞
 export ICON_BATTERY_50=󰁾
 export ICON_BATTERY_25=󰁺
 export ICON_BATTERY_CHARGING=󰂄

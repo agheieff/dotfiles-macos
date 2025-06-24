@@ -21,13 +21,16 @@ sketchybar --add item space_separator left \
                                 icon.padding_left=8 \
                                 icon.padding_right=8
 
+# Add custom event for window movements
+sketchybar --add event window_moved
+
 # Initialize the space display script
 sketchybar --add item spaces_updater left \
            --set spaces_updater drawing=off \
                                updates=on \
                                script="$PLUGIN_DIR/spaces.sh" \
            --subscribe spaces_updater aerospace_workspace_change \
-                                      front_app_switched
+                                      window_moved
 
 # Initialize the space display
 "$PLUGIN_DIR/spaces.sh"
