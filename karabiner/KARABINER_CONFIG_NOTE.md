@@ -16,9 +16,15 @@ All shortcuts in complex_modifications use `left_option` as the trigger modifier
 
 This allows the built-in Option key to work naturally for all shortcuts.
 
-### External Keyboard (SEMICO USB Gaming Keyboard)
+### External Keyboards
+
+#### SEMICO USB Gaming Keyboard
 Vendor ID: 6700, Product ID: 31876
 
+#### Generic External Keyboard
+Vendor ID: 39658, Product ID: 4137
+
+Both external keyboards use the same mapping:
 - Physical Win key (left_command) → Option (triggers shortcuts)
 - Physical Ctrl key → Command
 - Physical Alt key (left_option) → Control
@@ -33,3 +39,30 @@ This configuration ensures:
 1. Device-specific simple modifications are configured in Karabiner GUI under Devices tab
 2. The complex modifications remain unchanged - they all use left_option as the modifier
 3. This setup survives macOS keyboard detection dialogs
+
+## Adding a New External Keyboard
+
+When connecting a new external keyboard:
+
+1. Open Karabiner-Elements
+2. Go to the "Devices" tab
+3. Select your new keyboard from the dropdown
+4. Add these Simple Modifications:
+   - From: left_command → To: left_option
+   - From: left_control → To: left_command
+   - From: left_option → To: left_control
+5. The keyboard will automatically be saved to karabiner.json with its vendor/product IDs
+
+This ensures the physical Win key on your external keyboard triggers all shortcuts.
+
+## Mouse Configuration
+
+External mice can have their scroll direction flipped in Karabiner:
+
+1. Go to Devices tab → Select your mouse
+2. Enable "Flip mouse vertical wheel"
+
+Currently configured mice with flipped scroll:
+- Logitech mouse (Vendor ID: 1133, Product ID: 45082)
+- Logitech mouse (Vendor ID: 1133, Product ID: 49271)
+- Bluetooth mouse (Device Address: 34-ec-b6-7c-54-50)

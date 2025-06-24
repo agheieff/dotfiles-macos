@@ -531,6 +531,95 @@
                                 "type": "basic"
                             }
                         ]
+                    },
+                    {
+                        "description": "Linux-style Text Navigation",
+                        "manipulators": [
+                            {
+                                "description": "Ctrl+Left Arrow to Option+Left (word left)",
+                                "from": {
+                                    "key_code": "left_arrow",
+                                    "modifiers": { "mandatory": ["control"] }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "left_arrow",
+                                        "modifiers": ["option"]
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "description": "Ctrl+Right Arrow to Option+Right (word right)",
+                                "from": {
+                                    "key_code": "right_arrow",
+                                    "modifiers": { "mandatory": ["control"] }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "right_arrow",
+                                        "modifiers": ["option"]
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "description": "Ctrl+Shift+Left Arrow to Option+Shift+Left (select word left)",
+                                "from": {
+                                    "key_code": "left_arrow",
+                                    "modifiers": { "mandatory": ["control", "shift"] }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "left_arrow",
+                                        "modifiers": ["option", "shift"]
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "description": "Ctrl+Shift+Right Arrow to Option+Shift+Right (select word right)",
+                                "from": {
+                                    "key_code": "right_arrow",
+                                    "modifiers": { "mandatory": ["control", "shift"] }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "right_arrow",
+                                        "modifiers": ["option", "shift"]
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "description": "Ctrl+Backspace to Option+Backspace (delete word)",
+                                "from": {
+                                    "key_code": "delete_or_backspace",
+                                    "modifiers": { "mandatory": ["control"] }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "delete_or_backspace",
+                                        "modifiers": ["option"]
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "description": "Ctrl+Delete to Option+Delete (delete word forward)",
+                                "from": {
+                                    "key_code": "delete_forward",
+                                    "modifiers": { "mandatory": ["control"] }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "delete_forward",
+                                        "modifiers": ["option"]
+                                    }
+                                ],
+                                "type": "basic"
+                            }
+                        ]
                     }
                 ]
             },
@@ -565,12 +654,12 @@
                             "to": [{ "key_code": "left_command" }]
                         },
                         {
-                            "from": { "key_code": "left_control" },
-                            "to": [{ "key_code": "vk_none" }]
-                        },
-                        {
                             "from": { "key_code": "left_command" },
                             "to": [{ "key_code": "left_control" }]
+                        },
+                        {
+                            "from": { "key_code": "left_control" },
+                            "to": [{ "key_code": "vk_none" }]
                         }
                     ]
                 },
@@ -600,6 +689,35 @@
                         "is_pointing_device": true,
                         "product_id": 49271,
                         "vendor_id": 1133
+                    },
+                    "ignore": false,
+                    "mouse_flip_vertical_wheel": true
+                },
+                {
+                    "identifiers": {
+                        "is_keyboard": true,
+                        "product_id": 4137,
+                        "vendor_id": 39658
+                    },
+                    "simple_modifications": [
+                        {
+                            "from": { "key_code": "left_command" },
+                            "to": [{ "key_code": "left_option" }]
+                        },
+                        {
+                            "from": { "key_code": "left_control" },
+                            "to": [{ "key_code": "left_command" }]
+                        },
+                        {
+                            "from": { "key_code": "left_option" },
+                            "to": [{ "key_code": "left_control" }]
+                        }
+                    ]
+                },
+                {
+                    "identifiers": {
+                        "device_address": "34-ec-b6-7c-54-50",
+                        "is_pointing_device": true
                     },
                     "ignore": false,
                     "mouse_flip_vertical_wheel": true
