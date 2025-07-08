@@ -23,16 +23,33 @@ This is a macOS configuration repository (dotfiles-macos) containing dotfiles fo
 - **Purpose**: Tiling window manager (sway replacement)
 - **Key**: Configured to use Win (Option) key as modifier with Colemak WASD navigation
 
+### Keyboard Layout
+- **Layout**: Colemak
+- **Important**: When user mentions keyboard shortcuts, they use Colemak letter positions
+  - Example: "Win+D" means Win+D in Colemak (physical G key on QWERTY)
+  - The karabiner.json uses physical key codes, so remapping works correctly
+
 ### Karabiner-Elements
 - **Location**: `.config/karabiner/karabiner.json`
 - **Purpose**: Keyboard remapping for custom shortcuts and modifier key handling
 - **Structure**: Complex JSON with rules for key remapping and application-specific modifications
+- **IMPORTANT Key Naming Convention**:
+  - When user mentions keyboard shortcuts, they mean PHYSICAL keys:
+    - **Ctrl** = Physical Ctrl key (external) or Fn key (MacBook)
+    - **Win** = Physical Win key (external) or Option key (MacBook)
+    - **Alt** = Physical Alt key (external) or Command key (MacBook)
+  - These names refer to physical keys BEFORE remapping, not internal modifiers
 - **Key Configuration**:
   - All complex modifications use `left_option` as the trigger modifier
   - Device-specific simple modifications handle keyboard differences:
     - Built-in keyboard: Option key works naturally for shortcuts
     - External keyboards (e.g., SEMICO USB Gaming Keyboard): Physical Win key mapped to Option
   - See `karabiner/KARABINER_CONFIG_NOTE.md` for detailed configuration
+- **Recent Additions**:
+  - Linux-style text navigation (Ctrl+arrows for word movement) - uses `command` modifier
+  - Terminal copy/paste remapping (Cmd+C/V → Ctrl+C/V in terminals)
+  - Application launching shortcuts (Win+Return for Ghostty, Win+B for browser, etc.)
+  - Media controls and screenshot shortcuts
 
 ### Neovim
 - **Location**: `.config/nvim/init.lua`
@@ -42,6 +59,11 @@ This is a macOS configuration repository (dotfiles-macos) containing dotfiles fo
 ### Helper Scripts
 - **C Programs**: `.config/sketchybar.backup/helpers/` contains C programs for CPU and network monitoring
 - **Build**: Use `make` in the helpers directory to compile
+
+## Important Files
+- `karabiner/KARABINER_CONFIG_NOTE.md` - Detailed explanation of current keyboard configuration
+- `TEMPORARY_FIXES.md` - Documentation of temporary workarounds
+- `TODO.md` - List of pending features and known issues
 
 ## Common Development Tasks
 
@@ -83,6 +105,10 @@ This is a macOS configuration repository (dotfiles-macos) containing dotfiles fo
 - **GitHub**: `agheieff/dotfiles-macos`
 - **Branch**: master
 
+## Temporary Fixes
+- **Diacritic input issue**: See `TEMPORARY_FIXES.md` for current workaround
+
 ## Known Issues
 - Win+Ctrl combinations may input characters (see TODO.md)
 - Some features from original Arch setup pending implementation
+- Key repeat vs accent menu conflict (temporary fix applied)
