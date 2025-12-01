@@ -7,9 +7,14 @@ CONFIG_DIR="$(dirname "$PLUGIN_DIR")"
 # Source colors
 source "$CONFIG_DIR/colors.sh"
 
+# ---------- 1.  keep the last workspace we were in ------------
+CACHE_DIR="${TMPDIR:-/tmp}/sketchybar-aerospace"
+mkdir -p "$CACHE_DIR"
+LAST_FILE="$CACHE_DIR/last_workspace"
+
 # Function to get icon for an app
 get_app_icon() {
-  local app=$1
+  local app="$1"
   case "$app" in
     "Safari") echo "󰖟" ;;
     "Google Chrome"|"Chrome") echo "󰊯" ;;
@@ -50,209 +55,234 @@ get_app_icon() {
   esac
 }
 
-# Handle the aerospace_workspace_change event
-if [ "$SENDER" = "aerospace_workspace_change" ]; then
-  # Get the new focused workspace from the event or query it
-  CURRENT_WORKSPACE="${FOCUSED_WORKSPACE:-$(aerospace list-workspaces --focused)}"
+# Build icon string for a workspace
+build_icon_string() {
+  local workspace="$1"
+  local apps="$2"
   
-  # Check for empty workspaces and remove them (except current)
-  items=$(sketchybar --query bar | jq -r '.items[] | select(startswith("space."))')
-  for item in $items; do
-    workspace="${item#space.}"
-    if [ "$workspace" != "$CURRENT_WORKSPACE" ]; then
-      # Check if workspace has any windows
-      apps=$(aerospace list-windows --workspace $workspace --format "%{app-name}" 2>/dev/null)
-      if [ -z "$apps" ]; then
-        sketchybar --remove space.$workspace
-      fi
-    fi
-  done
-  
-  # Quick highlight update for existing workspaces
-  if sketchybar --query space.$CURRENT_WORKSPACE &>/dev/null; then
-    # Just update highlights, no need to rebuild
-    items=$(sketchybar --query bar | jq -r '.items[] | select(startswith("space."))')
-    update_cmd=""
-    for item in $items; do
-      workspace="${item#space.}"
-      if [ "$workspace" = "$CURRENT_WORKSPACE" ]; then
-        update_cmd="$update_cmd --set $item background.drawing=on icon.color=$BLACK background.color=$YELLOW"
-      else
-        update_cmd="$update_cmd --set $item background.drawing=off icon.color=$WHITE"
-      fi
-    done
-    
-    if [ -n "$update_cmd" ]; then
-      eval "sketchybar $update_cmd"
-    fi
-    # Continue to full update to ensure icons are shown
-  fi
-  
-  # New workspace - create minimal item first, update later
-  sketchybar --add item space.$CURRENT_WORKSPACE left \
-    --set space.$CURRENT_WORKSPACE \
-      background.color=$YELLOW \
-      background.corner_radius=5 \
-      background.height=26 \
-      background.drawing=on \
-      icon="$CURRENT_WORKSPACE" \
-      icon.color=$BLACK \
-      icon.padding_left=7 \
-      icon.padding_right=7 \
-      icon.font="Hack Nerd Font:Bold:18.0" \
-      label.drawing=off \
-      click_script="aerospace workspace $CURRENT_WORKSPACE" \
-    --subscribe space.$CURRENT_WORKSPACE aerospace_workspace_change
-  
-  # Position it correctly
-  spaces=$(sketchybar --query bar | jq -r '.items[] | select(startswith("space."))' | sed 's/space\.//' | sort -g)
-  prev_space=""
-  for s in $spaces; do
-    if [ "$s" -lt "$CURRENT_WORKSPACE" ] 2>/dev/null; then
-      prev_space=$s
-    fi
-  done
-  
-  if [ -n "$prev_space" ]; then
-    sketchybar --move space.$CURRENT_WORKSPACE after space.$prev_space
-  else
-    sketchybar --move space.$CURRENT_WORKSPACE after space_separator
-  fi
-  
-  # Update other highlights
-  update_cmd=""
-  for s in $spaces; do
-    if [ "$s" != "$CURRENT_WORKSPACE" ]; then
-      update_cmd="$update_cmd --set space.$s background.drawing=off icon.color=$WHITE"
-    fi
-  done
-  
-  if [ -n "$update_cmd" ]; then
-    eval "sketchybar $update_cmd"
-  fi
-  
-  # Schedule async icon update for the new workspace
-  (
-    sleep 0.05
-    apps=$(aerospace list-windows --workspace $CURRENT_WORKSPACE --format "%{app-name}" 2>/dev/null | sort | uniq)
-    icon_string="$CURRENT_WORKSPACE"
-    if [ -n "$apps" ]; then
-      icon_string="${icon_string}  "
-      first=true
-      while IFS= read -r app; do
-        icon=$(get_app_icon "$app")
-        if [ "$first" = true ]; then
+  local icon_string="$workspace"
+  if [ -n "$apps" ]; then
+    icon_string="${icon_string} "
+    local first=1
+    while IFS= read -r app; do
+      # Trim whitespace
+      app=$(echo "$app" | xargs)
+      if [ -n "$app" ]; then
+        local icon=$(get_app_icon "$app")
+        if [ $first -eq 1 ]; then
           icon_string="${icon_string}${icon}"
-          first=false
+          first=0
         else
           icon_string="${icon_string} ${icon}"
         fi
-      done <<< "$apps"
-    fi
-    sketchybar --set space.$CURRENT_WORKSPACE icon="$icon_string"
-  ) &
+      fi
+    done <<< "$apps"
+  fi
   
-  exit 0
+  echo "$icon_string"
+}
+
+# Get sorted list of all workspaces that have windows
+get_active_workspaces() {
+  aerospace list-workspaces --monitor all --empty no 2>/dev/null | sort -g
+}
+
+# Update positions of all space items to maintain numeric order
+update_space_positions() {
+  local current_workspace="$1"
+  
+  # Get all active workspaces
+  local workspaces=$(get_active_workspaces)
+  
+  # Always include current workspace even if empty
+  if ! echo "$workspaces" | grep -q "^$current_workspace$"; then
+    workspaces=$(echo -e "$current_workspace\n$workspaces" | sort -g | uniq)
+  fi
+  
+  # Make sure we have at least the current workspace
+  if [ -z "$workspaces" ]; then
+    workspaces="$current_workspace"
+  fi
+  
+  # Position spaces in correct numeric order
+  local prev_item="space_separator"
+  for workspace in $workspaces; do
+    if sketchybar --query space.$workspace >/dev/null 2>&1; then
+      sketchybar --move space.$workspace after $prev_item 2>/dev/null
+      prev_item="space.$workspace"
+    fi
+  done
+}
+
+# ---------- 2.  workspace-change handler ----------------------
+if [ "$SENDER" = "aerospace_workspace_change" ]; then
+    # where we are going
+    CURRENT_WORKSPACE="${FOCUSED_WORKSPACE:-$(aerospace list-workspaces --focused 2>/dev/null)}"
+    [ -z "$CURRENT_WORKSPACE" ] && CURRENT_WORKSPACE=1
+
+    # where we just came from
+    LAST_WORKSPACE=$(<"$LAST_FILE" 2>/dev/null)
+
+    # delete the old workspace-item if it is now empty and not the one we just entered
+    if [[ -n $LAST_WORKSPACE && $LAST_WORKSPACE != "$CURRENT_WORKSPACE" ]]; then
+        last_apps=$(aerospace list-windows --workspace "$LAST_WORKSPACE" --format "%{app-name}" 2>/dev/null)
+        if [[ -z $last_apps ]]; then
+            sketchybar --remove "space.$LAST_WORKSPACE" 2>/dev/null
+        fi
+    fi
+
+    # remember for the next switch
+    echo "$CURRENT_WORKSPACE" > "$LAST_FILE"
+
+    # Update highlighting: turn off all, turn on current
+    sketchybar --set '/space\..*/' background.drawing=off icon.color=$WHITE background.color=$BACKGROUND_1 2>/dev/null
+    sketchybar --set space.$CURRENT_WORKSPACE background.drawing=on icon.color=$BLACK background.color=$YELLOW 2>/dev/null
+    
+    # Create workspace item if it doesn't exist
+    if ! sketchybar --query space.$CURRENT_WORKSPACE >/dev/null 2>&1; then
+      sketchybar --add item space.$CURRENT_WORKSPACE left \
+        --set space.$CURRENT_WORKSPACE \
+          background.color=$YELLOW \
+          background.corner_radius=5 \
+          background.height=26 \
+          background.drawing=on \
+          icon="$CURRENT_WORKSPACE" \
+          icon.color=$BLACK \
+          icon.padding_left=7 \
+          icon.padding_right=7 \
+          icon.font="Hack Nerd Font:Bold:18.0" \
+          label.drawing=off \
+          click_script="aerospace workspace $CURRENT_WORKSPACE" \
+        --subscribe space.$CURRENT_WORKSPACE aerospace_workspace_change 2>/dev/null
+    fi
+    
+    # Update icon for current workspace (do this async to not block)
+    (
+      sleep 0.05
+      apps=$(aerospace list-windows --workspace $CURRENT_WORKSPACE --format "%{app-name}" 2>/dev/null | sort | uniq)
+      icon_string=$(build_icon_string "$CURRENT_WORKSPACE" "$apps")
+      sketchybar --set space.$CURRENT_WORKSPACE icon="$icon_string" 2>/dev/null
+    ) &
+    
+    exit 0
 fi
 
-# Handle window movement events
+# Handle window moved event
 if [ "$SENDER" = "window_moved" ]; then
-  # Update all visible workspaces efficiently
-  visible_workspaces=$(sketchybar --query bar | jq -r '.items[] | select(startswith("space."))' | sed 's/space\.//')
+  # Get current workspace
+  CURRENT_WORKSPACE=$(aerospace list-workspaces --focused 2>/dev/null)
+  [ -z "$CURRENT_WORKSPACE" ] && CURRENT_WORKSPACE="1"
   
-  update_cmd=""
-  for workspace in $visible_workspaces; do
+  # Get all active workspaces
+  WORKSPACES=$(get_active_workspaces)
+  
+  # Always include current workspace even if empty
+  if ! echo "$WORKSPACES" | grep -q "^$CURRENT_WORKSPACE$"; then
+    WORKSPACES=$(echo -e "$CURRENT_WORKSPACE
+$WORKSPACES" | sort -g | uniq)
+  fi
+  
+  # Make sure we have at least the current workspace
+  if [ -z "$WORKSPACES" ]; then
+    WORKSPACES="$CURRENT_WORKSPACE"
+  fi
+  
+  # Create a list of workspaces that should exist
+  VALID_WORKSPACES=""
+  
+  # Update or create items for all workspaces
+  for workspace in $WORKSPACES; do
+    # Add to valid workspaces list
+    if [ -z "$VALID_WORKSPACES" ]; then
+      VALID_WORKSPACES="$workspace"
+    else
+      VALID_WORKSPACES="$VALID_WORKSPACES $workspace"
+    fi
+    
+    # Get apps in this workspace
     apps=$(aerospace list-windows --workspace $workspace --format "%{app-name}" 2>/dev/null | sort | uniq)
     
-    icon_string="$workspace"
-    if [ -n "$apps" ]; then
-      icon_string="${icon_string}  "
-      OLD_IFS="$IFS"
-      IFS=$'\n'
-      first=true
-      for app in $apps; do
-        icon=$(get_app_icon "$app")
-        if [ "$first" = true ]; then
-          icon_string="${icon_string}${icon}"
-          first=false
-        else
-          icon_string="${icon_string} ${icon}"
-        fi
-      done
-      IFS="$OLD_IFS"
+    # Build icon string
+    icon_string=$(build_icon_string "$workspace" "$apps")
+    
+    # Set colors based on whether it's focused
+    if [ "$workspace" = "$CURRENT_WORKSPACE" ]; then
+      bg_color=$YELLOW
+      text_color=$BLACK
+      drawing=on
+    else
+      bg_color=$BACKGROUND_1
+      text_color=$WHITE
+      drawing=off
     fi
     
-    update_cmd="$update_cmd --set space.$workspace icon=\"$icon_string\" icon.font=\"Hack Nerd Font:Bold:18.0\""
+    # Update or create space item
+    if sketchybar --query space.$workspace >/dev/null 2>&1; then
+      sketchybar --set space.$workspace 
+        icon="$icon_string" 
+        icon.color=$text_color 
+        background.color=$bg_color 
+        background.drawing=$drawing 2>/dev/null
+    else
+      sketchybar --add item space.$workspace left 
+        --set space.$workspace 
+          background.color=$bg_color 
+          background.corner_radius=5 
+          background.height=26 
+          background.drawing=$drawing 
+          icon="$icon_string" 
+          icon.color=$text_color 
+          icon.padding_left=7 
+          icon.padding_right=7 
+          icon.font="Hack Nerd Font:Bold:18.0" 
+          label.drawing=off 
+          click_script="aerospace workspace $workspace" 
+        --subscribe space.$workspace aerospace_workspace_change 2>/dev/null
+    fi
   done
   
-  if [ -n "$update_cmd" ]; then
-    eval "sketchybar $update_cmd"
-  fi
+  # Update positions to maintain correct order
+  update_space_positions "$CURRENT_WORKSPACE"
+  
   exit 0
 fi
 
-# Get current workspace (use passed value if available, otherwise query)
-CURRENT_WORKSPACE="${FOCUSED_WORKSPACE:-$(aerospace list-workspaces --focused)}"
+# Full refresh (initialization or manual trigger)
+# Get current workspace
+CURRENT_WORKSPACE="${FOCUSED_WORKSPACE:-$(aerospace list-workspaces --focused 2>/dev/null)}"
+[ -z "$CURRENT_WORKSPACE" ] && CURRENT_WORKSPACE="1"
 
-# Cache all workspace windows in one call
-cache_workspace_windows() {
-  aerospace list-windows --all --format "%{workspace}:%{app-name}" 2>/dev/null | sort | uniq
-}
-
-# Function to get app icons for a workspace
-get_workspace_apps() {
-  local workspace=$1
-  aerospace list-windows --workspace $workspace --format "%{app-name}" 2>/dev/null | sort | uniq
-}
-
-# Get all workspaces with windows (don't cache all windows, too slow)
-WORKSPACES_WITH_WINDOWS=$(aerospace list-workspaces --monitor all --empty no 2>/dev/null | sort -g)
+# Get all active workspaces
+WORKSPACES=$(get_active_workspaces)
 
 # Always include current workspace even if empty
-if ! echo "$WORKSPACES_WITH_WINDOWS" | grep -q "^$CURRENT_WORKSPACE$"; then
-  WORKSPACES_WITH_WINDOWS=$(echo -e "$CURRENT_WORKSPACE\n$WORKSPACES_WITH_WINDOWS" | sort -g | uniq)
+if ! echo "$WORKSPACES" | grep -q "^$CURRENT_WORKSPACE$"; then
+  WORKSPACES=$(echo -e "$CURRENT_WORKSPACE
+$WORKSPACES" | sort -g | uniq)
 fi
 
 # Make sure we have at least the current workspace
-if [ -z "$WORKSPACES_WITH_WINDOWS" ]; then
-  WORKSPACES_WITH_WINDOWS="$CURRENT_WORKSPACE"
+if [ -z "$WORKSPACES" ]; then
+  WORKSPACES="$CURRENT_WORKSPACE"
 fi
 
-# Get existing space items
-EXISTING_SPACES=$(sketchybar --query bar | jq -r '.items[] | select(startswith("space."))' | sed 's/space\.//')
+# Create a list of workspaces that should exist
+VALID_WORKSPACES=""
 
-# Remove spaces that no longer exist (but keep current workspace)
-for space in $EXISTING_SPACES; do
-  if [ "$space" != "$CURRENT_WORKSPACE" ] && ! echo "$WORKSPACES_WITH_WINDOWS" | grep -q "^$space$"; then
-    sketchybar --remove space.$space
+# Update or create items for all workspaces
+for workspace in $WORKSPACES; do
+  # Add to valid workspaces list
+  if [ -z "$VALID_WORKSPACES" ]; then
+    VALID_WORKSPACES="$workspace"
+  else
+    VALID_WORKSPACES="$VALID_WORKSPACES $workspace"
   fi
-done
-
-# Create or update space items
-for workspace in $WORKSPACES_WITH_WINDOWS; do
-  # Get apps in this workspace
-  apps=$(get_workspace_apps $workspace)
   
-  # Build icon string with workspace number and app icons
-  icon_string="$workspace"
-  if [ -n "$apps" ]; then
-    # Add more space between number and apps
-    icon_string="${icon_string}  "
-    # Save IFS and set it to newline only
-    OLD_IFS="$IFS"
-    IFS=$'\n'
-    first=true
-    for app in $apps; do
-      icon=$(get_app_icon "$app")
-      if [ "$first" = true ]; then
-        icon_string="${icon_string}${icon}"
-        first=false
-      else
-        icon_string="${icon_string} ${icon}"  # One space between icons (reduced by ~60%)
-      fi
-    done
-    IFS="$OLD_IFS"
-  fi
+  # Get apps in this workspace
+  apps=$(aerospace list-windows --workspace $workspace --format "%{app-name}" 2>/dev/null | sort | uniq)
+  
+  # Build icon string
+  icon_string=$(build_icon_string "$workspace" "$apps")
   
   # Set colors based on whether it's focused
   if [ "$workspace" = "$CURRENT_WORKSPACE" ]; then
@@ -265,67 +295,58 @@ for workspace in $WORKSPACES_WITH_WINDOWS; do
     drawing=off
   fi
   
-  # Check if space already exists
-  if sketchybar --query space.$workspace &>/dev/null; then
-    # Update existing space
+  # Update or create space item
+  if sketchybar --query space.$workspace >/dev/null 2>&1; then
     sketchybar --set space.$workspace \
       icon="$icon_string" \
       icon.font="Hack Nerd Font:Bold:18.0" \
       icon.color=$text_color \
       background.color=$bg_color \
-      background.drawing=$drawing \
-      script="$PLUGIN_DIR/spaces.sh"
+      background.drawing=$drawing 2>/dev/null
   else
-    # Create new space - find the right position to insert it
-    prev_space=""
-    for ws in $(echo "$WORKSPACES_WITH_WINDOWS" | sort -g); do
-      if [ "$ws" = "$workspace" ]; then
-        break
+    sketchybar --add item space.$workspace left \
+      --set space.$workspace \
+        background.color=$bg_color \
+        background.corner_radius=5 \
+        background.height=26 \
+        background.drawing=$drawing \
+        icon="$icon_string" \
+        icon.color=$text_color \
+        icon.padding_left=7 \
+        icon.padding_right=7 \
+        icon.font="Hack Nerd Font:Bold:18.0" \
+        label.drawing=off \
+        click_script="aerospace workspace $workspace" \
+      --subscribe space.$workspace aerospace_workspace_change 2>/dev/null
+  fi
+done
+
+# Remove spaces that no longer exist or are empty (except current)
+existing_spaces=$(sketchybar --query bar 2>/dev/null | jq -r '.items[] | select(startswith("space."))' 2>/dev/null | sed 's/space\\.//')
+for space in $existing_spaces; do
+  # Check if this space should still exist
+  should_exist=0
+  for valid_space in $VALID_WORKSPACES; do
+    if [ "$space" = "$valid_space" ]; then
+      should_exist=1
+      break
+    fi
+  done
+  
+  # Special case: Remove empty workspaces that are not the current one
+  if [ $should_exist -eq 0 ] || ([ $should_exist -eq 1 ] && [ "$space" != "$CURRENT_WORKSPACE" ]); then
+    # Check if the space is empty and not the current one
+    if [ "$space" != "$CURRENT_WORKSPACE" ]; then
+      space_apps=$(aerospace list-windows --workspace $space --format "%{app-name}" 2>/dev/null)
+      if [ -z "$space_apps" ]; then
+        sketchybar --remove space.$space 2>/dev/null
       fi
-      prev_space=$ws
-    done
-    
-    if [ -n "$prev_space" ]; then
-      # Insert after the previous workspace
-      sketchybar --add item space.$workspace left \
-        --move space.$workspace after space.$prev_space \
-        --set space.$workspace \
-          background.color=$bg_color \
-          background.corner_radius=5 \
-          background.height=26 \
-          background.drawing=$drawing \
-          icon="$icon_string" \
-          icon.color=$text_color \
-          icon.padding_left=7 \
-          icon.padding_right=7 \
-          icon.font="Hack Nerd Font:Bold:18.0" \
-          label.drawing=off \
-          click_script="aerospace workspace $workspace" \
-          script="$PLUGIN_DIR/spaces.sh" \
-        --subscribe space.$workspace aerospace_workspace_change
-    else
-      # This is the first workspace, add after separator
-      sketchybar --add item space.$workspace left \
-        --move space.$workspace after space_separator \
-        --set space.$workspace \
-          background.color=$bg_color \
-          background.corner_radius=5 \
-          background.height=26 \
-          background.drawing=$drawing \
-          icon="$icon_string" \
-          icon.color=$text_color \
-          icon.padding_left=7 \
-          icon.padding_right=7 \
-          icon.font="Hack Nerd Font:Bold:18.0" \
-          label.drawing=off \
-          click_script="aerospace workspace $workspace" \
-          script="$PLUGIN_DIR/spaces.sh" \
-        --subscribe space.$workspace aerospace_workspace_change
     fi
   fi
 done
 
-# Skip reordering - items are already inserted in correct positions
+# Update positions to maintain correct order
+update_space_positions "$CURRENT_WORKSPACE"
 
 # Update the bracket
-sketchybar --set spaces_bracket background.color=$BACKGROUND_1
+sketchybar --set spaces_bracket background.color=$BACKGROUND_1 2>/dev/null

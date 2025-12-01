@@ -24,7 +24,7 @@ sketchybar --add item space_separator left \
 # Add custom event for window movements
 sketchybar --add event window_moved
 
-# Initialize the space display script
+# Initialize the space display script (using improved version)
 sketchybar --add item spaces_updater left \
            --set spaces_updater drawing=off \
                                updates=on \

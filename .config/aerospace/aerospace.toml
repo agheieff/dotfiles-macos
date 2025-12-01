@@ -14,16 +14,12 @@ exec-on-workspace-change = [
 
 on-focus-changed = [
 	'move-mouse window-lazy-center',
-	'exec-and-forget sketchybar --trigger aerospace_focus_change FOCUSED_WORKSPACE=$AEROSPACE_FOCUSED_WORKSPACE',
+	'exec-and-forget sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE=$AEROSPACE_FOCUSED_WORKSPACE',
 ]
 
-# on-window-detected = [
-# 	{ run = 'exec-and-forget sketchybar --trigger window_moved' }
-# ]
-
-# on-layout-change = [
-# 	'exec-and-forget sketchybar --trigger window_moved'
-# ]
+on-window-detected = [
+	{ if = { app-id = 'com.apple.finder' }, run = 'layout floating' }
+]
 
 
 on-focused-monitor-changed = ['move-mouse monitor-lazy-center']

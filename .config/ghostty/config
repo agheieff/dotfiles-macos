@@ -32,3 +32,6 @@ window-vsync = true
 
 # Useful keybindings (Cmd+C/V for copy/paste on macOS)
 # Copy-on-select is enabled by default
+
+# Use bash as the default shell
+command = /bin/bash
